@@ -1,0 +1,162 @@
+{
+    "cale_galerie": "./resurse/imagini/galerie/original",
+    "imagini": [
+        {
+      "cale_fisier": "ferrari_toamna.jpg",
+      "titlu": "Ferrari toamna",
+      "text_descriere": "Ferrari parcat toamna",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "alpine_toamna.jpg",
+      "titlu": "Alpine",
+      "text_descriere": "Alpine vintage toamna",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "audi_toamna.jpg",
+      "titlu": "Audi",
+      "text_descriere": "Audi parcat toamna",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "bmw_toamna.jpg",
+      "titlu": "Interior BMW",
+      "text_descriere": "Interior BMW peisaj toamna",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "chevy_primavara.jpg",
+      "titlu": "Chevy",
+      "text_descriere": "Chevy vintage primavara",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "defender_toamna.jpg",
+      "titlu": "Defender",
+      "text_descriere": "Defender offroad",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "ferrari_primavara.jpg",
+      "titlu": "Ferrari",
+      "text_descriere": "Ferrari parcat primavara",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "ford_primavara.jpg",
+      "titlu": "Ford",
+      "text_descriere": "Ford vintage la munte",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "golf_primavara.jpg",
+      "titlu": "Golf",
+      "text_descriere": "Golf culori exotice",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "gt3_primavara.jpg",
+      "titlu": "Gt3",
+      "text_descriere": "Gt3 touring albastru",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "gt63_primavara.jpg",
+      "titlu": "Gt63",
+      "text_descriere": "Model nou de gt63 din spate",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "jag_toamna.jpg",
+      "titlu": "Jaguar",
+      "text_descriere": "Jaguar vintage alb negru",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "lexus_primavara.jpg",
+      "titlu": "Lexus",
+      "text_descriere": "Lexus intr-o parcare goala",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "masina_toamna.jpg",
+      "titlu": "Masina abandonata",
+      "text_descriere": "Masina abandonata in natura",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "mercedes_primavara.jpg",
+      "titlu": "Mercedes",
+      "text_descriere": "Gt63 model nou din fata",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "mustang_toamna.jpg",
+      "titlu": "Mustang",
+      "text_descriere": "Mustang vintage in padure",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "porsche_primavara.jpg",
+      "titlu": "Porsche",
+      "text_descriere": "Porsche vintage rosu",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "r8_toamna.jpg",
+      "titlu": "R8",
+      "text_descriere": "R8 visiniu din spate",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "seria3_toamna.jpg",
+      "titlu": "BMW",
+      "text_descriere": "Seria 3 in peisaj de toamna",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "camaro_primavara.jpg",
+      "titlu": "Camaro",
+      "text_descriere": "Camaro parcat",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "fiesta_primavara.jpg",
+      "titlu": "Fiesta si Mustang",
+      "text_descriere": "Fiesta si Mustang in parcare",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "interior_mercedes_primavara.jpg",
+      "titlu": "Interior Mercedes",
+      "text_descriere": "Interior alb de Maybach",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "mini_primavara.jpg",
+      "titlu": "Mini",
+      "text_descriere": "Mini in boxa la cursa",
+      "anotimp": "primavara"
+    },
+    {
+      "cale_fisier": "a3_toamna.jpg",
+      "titlu": "Audi A3",
+      "text_descriere": "A3 in peisaj de toamna",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "acura_toamna.jpg",
+      "titlu": "Acura",
+      "text_descriere": "Acura in ploaie",
+      "anotimp": "toamna"
+    },
+    {
+      "cale_fisier": "mustang_noaptea_toamna.jpg",
+      "titlu": "Mustang noaptea",
+      "text_descriere": "Mustang parcat la marginea orasului",
+      "anotimp": "toamna"
+    }
+  ]
+}    
+

@@ -1,0 +1,40 @@
+<div class="gallery-container">
+  <% 
+  const gridStructure = [
+    'zona1', 'zona2', 'zona3',
+    'zona4', 'zona14', 'zona5',
+    'zona6', 'zona7', 'zona8',
+    'zona9', 'zona14', 'zona10',
+    'zona11', 'zona12', 'zona13'
+  ];
+  let imageIndex = 0;
+  %>
+
+  <% gridStructure.forEach((zona) => { %>
+    <% if (zona === 'zona14') { %>
+      <div class="gallery-gap <%= zona %>"></div>
+    <% } else { %>
+      <% if (imagini[imageIndex]) { %>
+        <div class="gallery-item <%= zona %>">
+          <figure>
+            <picture>
+              <source media="(max-width: 600px)" 
+                      srcset="/resized/200/<%= imagini[imageIndex].cale_fisier %>">
+              <source media="(max-width: 900px)" 
+                      srcset="/resized/300/<%= imagini[imageIndex].cale_fisier %>">
+              <img src="/resized/400/<%= imagini[imageIndex].cale_fisier %>" 
+                   alt="<%= imagini[imageIndex].alt || imagini[imageIndex].cale_fisier %>"
+                   title="<%= imagini[imageIndex].text_descriere %>">
+            </picture>
+            <figcaption>
+              <%= imagini[imageIndex].text_descriere %>
+            </figcaption>
+          </figure>
+        </div>
+        <% imageIndex++; %>
+      <% } else { %>
+        <div class="gallery-gap <%= zona %>"></div>
+      <% } %>
+    <% } %>
+  <% }) %>
+</div>

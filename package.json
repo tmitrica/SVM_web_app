@@ -1,0 +1,21 @@
+{
+  "name": "site-vanzari-masini",
+  "version": "1.0.0",
+  "description": "Site vânzări mașini",
+  "author": "Mitrică Teodor",
+  "keywords": [
+    "site",
+    "masini",
+    "vanzari",
+    "anunturi"
+  ],
+  "dependencies": {
+    "bootstrap": "^5.3.6",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "luxon": "^3.6.1",
+    "pg": "^8.14.1",
+    "sass": "^1.87.0",
+    "sharp": "^0.34.1"
+  }
+}

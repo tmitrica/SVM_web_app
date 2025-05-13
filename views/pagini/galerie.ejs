@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ro">
+<%- include("../fragmente/head") %>
+<body>
+    <%- include("../fragmente/header") %>
+
+    <main class="container-galerie">
+        <h1>Galerie Foto (<%= anotimpCurent %>)</h1>
+        <%- include("../fragmente/galerie", { imagini: imagini, caleBase: caleBase }) %>
+    </main>
+
+    <%- include("../fragmente/footer") %>
+</body>
+</html>

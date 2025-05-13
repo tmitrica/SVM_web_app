@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <%- include("../fragmente/head") %>
+  <body>
+    <%- include("../fragmente/header") %>
+
+     <div class="background-container">
+                <div class="background-slide slide-1"></div>
+                <div class="background-slide slide-2"></div>
+            </div>
+    
+            <section class="highlights">
+            <%- include('../fragmente/galerie', { 
+                caleBase: caleBase, 
+                imagini: imagini 
+            }) %>
+        </section>
+        
+    <main>
+            
+        <section id ="pagina_princip" class="prezentare">
+            <h2>Pagina principală</h2>
+
+            <p>Descoperă cele mai bune <b>recomandări și oferte pentru mașini</b> noi și rulate, atent verificate și pregătite să-ți ofere confort și siguranță pe drum. Indiferent dacă ești în căutare de un <b>autoturism</b> de oraș, un <i lang="en">SUV</i> puternic sau un model sport, avem soluția perfectă pentru tine!</p>
+
+            <div>
+                <figure>
+                    <picture>
+                        <!-- Varianta pentru mobil (imagine mică) -->
+                        <source media="(max-width: 800px)" srcset="./resurse/imagini/mclaren_mic.jpg">
+                        <!-- Varianta pentru tabletă (imagine medie) -->
+                        <source media="(max-width: 1400px)" srcset="./resurse/imagini/mclaren_mediu.jpg">
+                        <!-- Varianta pentru desktop (imagine mare) -->
+                        <img src="./resurse/imagini/mclaren_free.jpg" alt="Descrierea imaginii">
+                    </picture>
+                    <figcaption>Evacuare McLaren 720S</figcaption>
+                </figure>
+            </div>
+        </section>
+        <br><br>
+
+        <section id="recomandari" class="recomandari">
+    <h2>Recomandările noastre</h2>
+    <div class="container">
+        <div class="row g-4"> <!-- row cu gutter/spațiu vertical 4 -->
+            <!-- Breakpoint-uri:
+                - Pe mobile (sub 768px): 1 coloană (col-12)
+                - Pe tabletă (≥768px): 2 coloane (col-md-6)
+                - Pe desktop (≥992px): 4 coloane (col-lg-3) -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <details>
+                    <summary>Primul anunț recomandat</summary>
+                    <p>Aici vor fi afișate detaliile primului anunț</p>
+                </details>
+            </div>
+            
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <details>
+                    <summary>Al doilea anunț recomandat</summary>
+                    <p>Aici vor fi afișate detaliile celui de-al doilea anunț</p>
+                </details>
+            </div>
+            
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <details>
+                    <summary>Al treilea anunț recomandat</summary>
+                    <p>Aici vor fi afișate detaliile celui de-al treilea anunț</p>
+                </details>
+            </div>
+            
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <details>
+                    <summary>Al patrulea anunț recomandat</summary>
+                    <p>Aici vor fi afișate detaliile celui de-al patrulea anunț</p>
+                </details>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <section id="tabel" class="tabel">
+            <div class="table-container">
+                <table>
+                    <caption>Cele mai vândute mașini anul trecut</caption>
+                    <thead>
+                        <tr>
+                            <th>Loc</th>
+                            <th>Produs</th>
+                            <th>Categorie</th>
+                            <th>Vânzări (buc)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Vw Golf</td>
+                            <td>Hatchback</td>
+                            <td>5000</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Audi A4</td>
+                            <td>Sedan</td>
+                            <td>4500</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Skoda Kodiaq</td>
+                            <td>SUV</td>
+                            <td>3000</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>BMW X5</td>
+                            <td>SUV</td>
+                            <td>2800</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Mercedes C-Class</td>
+                            <td>Sedan</td>
+                            <td>2600</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Dacia Duster</td>
+                            <td>SUV</td>
+                            <td>2500</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Ford Focus</td>
+                            <td>Hatchback</td>
+                            <td>2400</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Renault Megane</td>
+                            <td>Hatchback</td>
+                            <td>2300</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Opel Astra</td>
+                            <td>Hatchback</td>
+                            <td>2200</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Toyota Corolla</td>
+                            <td>Sedan</td>
+                            <td>2100</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>Total vânzări</strong></td>
+                            <td><strong>32,400</strong></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">Date actualizate la sfârșitul anului</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+        
+        
+        <section class="calendar">
+            <h2>calendar</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, accusantium ullam quidem itaque vel veniam, perspiciatis recusandae vitae qui amet obcaecati. Doloremque dolorum fugit perferendis non consequuntur adipisci deleniti aliquam.</p>
+        </section>
+
+        <section class="informatii">
+            <h2>Diferite anunturi</h2>
+            <div class="anim-text-container">
+                <p class="anim-text">🚗 Oferte exclusive zilnice! 🚗</p>
+            </div>
+            <a href="https://www.mobile.de/">test link</a>  
+        </section>
+
+        <section class="utilizatori_online">
+            <h2>utilizatori online</h2>
+                <div>
+                    IP utilizator: <%= userIP %>
+                </div>
+            </section>
+
+        <section class="statistici">
+            <h2>utilizatori si statistici</h2>
+                <div class="text-coloane">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, accusantium ullam quidem itaque vel veniam, perspiciatis recusandae vitae qui amet obcaecati. Doloremque dolorum fugit perferendis non consequuntur adipisci deleniti aliquam.</p>
+                </div>
+        </section>
+
+        <section class="date_site">
+            <h2>date despre site</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, accusantium ullam quidem itaque vel veniam, perspiciatis recusandae vitae qui amet obcaecati. Doloremque dolorum fugit perferendis non consequuntur adipisci deleniti aliquam.</p>
+        </section>
+
+
+        <a href="#" id="link-top">
+            <div class="diamond">
+                <div class="triangle"></div>
+            </div>
+            <span class="tooltip">Începutul paginii</span>
+        </a>
+        
+    </main>
+
+    <%- include("../fragmente/footer") %>
+  </body>
+</html>

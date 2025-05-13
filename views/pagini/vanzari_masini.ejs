@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<%- include("../fragmente/head") %>
+<body>
+    <%- include("../fragmente/header") %>
+
+    <main>
+        <section id="vanzari_masini" class="vanzari_masini">
+            <div class="reflected-text">
+                <h2 data-text="Mașini de vânzare">Mașini de vânzare</h2>
+            </div>
+            
+            <p>La <b><abbr title="Site vânzări mașini">SVM</abbr></b>, știm cât de importantă este alegerea mașinii potrivite. De aceea, îți punem la dispoziție o selecție largă de <b>autoturisme</b> cu prețuri corecte și oferte atractive.
+            </p>
+            <section id="anunt">
+                <h3>Anunțuri</h3>
+                <p>Puteți sorta anunțurile în funcție de <b>motorizare, kilometraj, preț</b>. Oferim opțiuni pentru consultarea <b>istoricului</b> autoturismului!</p>
+                
+                <div class="lista-anunturi">
+                    <div class="anunt-item">Anunț 1</div>
+                    <hr class="efect-css-stilizare-hr">
+                    
+                    <div class="anunt-item">Anunț 2</div>
+                    <hr class="efect-css-stilizare-hr">
+                    
+                    <div class="anunt-item">Anunț 3</div>
+                    <hr class="efect-css-stilizare-hr">
+                    
+                    <div class="anunt-item">Anunț 4</div>
+                    <hr class="efect-css-stilizare-hr">
+                    
+                    <div class="anunt-item">Anunț 5</div>
+                    <hr class="efect-css-stilizare-hr">
+                    
+                    <div class="anunt-item">Anunț 6</div>
+                    <hr class="efect-css-stilizare-hr">
+                    
+                    <div class="anunt-item">Anunț 7</div>
+                    <hr class="efect-css-stilizare-hr">
+                    
+                    <div class="anunt-item">Anunț 8</div>
+                </div>
+            </section>
+
+            <section id="cumparare">
+                <h3>Cumpără</h3>
+                <p>Am citit <i lang="en">The Mirror</i> zilele trecute și am dat peste o scrisoare de la un cititor care a scris: „Mă deplasam cu bicicleta spre muncă când un Ferrari roșu s-a oprit lângă mine. Din geam, Jeremy Clarkson a strigat 'Ia-ți o mașină!'' și a plecat.” ~ Jeremy Clarkson</p>
+                <p>Site-ul nostru suportă <b>plați online</b> și oferă o <b>garanție</b> contra cost de un an calendaristic. <b>Factura</b> va fi trimisă pe mail după încheierea tranzacției</p>
+                <p>Costul garanției este calculat astfel: </p>
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mi>cost</mi>
+                    <mo>=</mo>
+                    <mrow>
+                        <mo>(</mo>
+                        <mfrac>
+                            <mi>nr_km_mașină</mi>
+                            <mn>1000</mn>
+                        </mfrac>
+                        <mo>+</mo>
+                        <mfrac>
+                            <mn>1</mn>
+                            <mn>20</mn>
+                        </mfrac>
+                        <mo>&#x22C5;</mo>  <!-- Punct de înmulțire -->
+                        <mi>prețul_mașinii</mi>
+                        <mo>)</mo>
+                        <mo>&#x22C5;</mo> 
+                        <mi>nr_ani_garanție</mi>
+                    </mrow>
+                </math>
+            </section>
+        </section>
+
+        <div class="efect-css-duotone">
+            <div class="duotone-image" style="background-image: url('../../resurse/imagini/duotone.jpg')"></div>
+        </div>
+    </main>
+
+    <%- include("../fragmente/footer") %>
+</body>
+</html>

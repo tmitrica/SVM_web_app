@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="ro">
+    <head>
+        <title>SVM</title>
+        
+            <meta charset="UTF-8"><!-- codificarea în memorie a caracterelor-->
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- va fi explicat când ajungem la CSS -->
+            <meta name="keywords" content="masina, vanzare, cumparare, anunt, diesel, electrica, hybrid, camioneta"><!--cuvintele cheie ale paginii; majoritatea motoarelor de căutare ignoră keywords -->
+            <meta name="description" content="Site vanzari masini, anunturi dealeri si persoane fizice"><!-- descrierea paginii, adesea apare sub link când sunt afișate rezultatele căutării -->
+            <meta name="author" content="Mitrica Teodor">  <!-- autorul/autoarea paginii-->     
+            <link rel="icon" type="image/png" href="./resurse/imagini/favicon/favicon-96x96.png" sizes="96x96" />
+            <link rel="icon" type="image/svg+xml" href="./resurse/imagini/favicon/favicon.svg" />
+            <link rel="shortcut icon" href="./resurse/imagini/favicon/favicon.ico" />
+            <link rel="apple-touch-icon" sizes="180x180" href="./resurse/imagini/favicon/apple-touch-icon.png" />
+            <meta name="apple-mobile-web-app-title" content="SVM" />
+            <link rel="manifest" href="./resurse/imagini/favicon/site.webmanifest" />
+            <link rel="stylesheet" type="text/CSS" href="./resurse/css/general.css"/>
+
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        
+            <!-- Font Awesome - pentru iconuri -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <link rel="stylesheet" type="text/CSS" href="./resurse/css/general.css"/>
+            
+            <!-- Adăugarea animației pentru iconuri -->
+            <style>
+                .animated-car {
+                    animation: bounce 2s infinite;
+                }
+    
+                @keyframes bounce {
+                    0%, 100% {
+                        transform: translateY(0);
+                    }
+                    50% {
+                        transform: translateY(-10px);
+                    }
+                }
+            </style>
+    </head>
+    <body>
+        <header>
+            <h1>SVM</h1>
+
+            <nav>
+                <div class="menu-toggle" tabindex="0">
+                  <i class="fas fa-bars"></i>
+                </div>
+                
+                <ul>
+                  <li tabindex="0">
+                    <a href="#pagina_princip">
+                      <i class="fas fa-home"></i>
+                      <span>Acasă</span>
+                    </a>
+                    <ul>
+                      <li><a href="#recomandari">Recomandări</a></li>
+                      <li><a href="#tabel">Top vânzări</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#vanzari_masini">Mașini de vânzare</a></li>
+                  <li><a href="#adauga_anunt">Adaugă anunț</a></li>
+                </ul>
+              </nav>
+            
+        </header>
+        <main>
+            
+            <section id ="pagina_princip" class="prezentare">
+                <h2>Pagina principală</h2>
+
+                <p>Descoperă cele mai bune <b>recomandări și oferte pentru mașini</b> noi și rulate, atent verificate și pregătite să-ți ofere confort și siguranță pe drum. Indiferent dacă ești în căutare de un <b>autoturism</b> de oraș, un <i lang="en">SUV</i> puternic sau un model sport, avem soluția perfectă pentru tine!</p>
+
+                
+                <div>
+                    <i class="fas fa-car" style="font-size: 50px; color: #000;"></i>
+                    <p>Mașină statică</p>
+                </div>
+
+               
+                <div>
+                    <i class="fas fa-car animated-car" style="font-size: 50px; color: #CF291D;"></i>
+                    <p>Mașină animată</p>
+                </div>
+
+
+                <br><br>
+                <!--IFRAME se foloseste si pt taskurile cu harti-->
+                <div class="container-iframe">
+                    <div class="taburi-iframe">
+                    <a href="https://www.youtube.com/embed/qEbbDtbdvGg" target="ifr-video">Drag race</a>
+                    <a href="https://www.youtube.com/embed/kMWrfsCsMOU" target="ifr-video" >Top Gear</a><br/>
+                    </div>
+
+                    <!--pentru videouri ca sa apara doar videoul se pune /embed/-->
+                    <iframe name="ifr-video" width="560" height="315" src="https://www.youtube.com/embed/qEbbDtbdvGg" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <div>
+                    <figure>
+                        <picture>
+                            <!-- Varianta pentru mobil (imagine mică) -->
+                            <source media="(max-width: 800px)" srcset="./resurse/imagini/mclaren_mic.jpg">
+                            <!-- Varianta pentru tabletă (imagine medie) -->
+                            <source media="(max-width: 1400px)" srcset="./resurse/imagini/mclaren_mediu.jpg">
+                            <!-- Varianta pentru desktop (imagine mare) -->
+                            <img src="./resurse/imagini/mclaren_free.jpg" alt="Descrierea imaginii">
+                        </picture>
+                        <figcaption>Evacuare McLaren 720S</figcaption>
+                    </figure>
+                </div>
+            </section>
+            <br><br>
+
+            <section id="recomandari" class="recomandari">
+                <h2>Recomandările noastre</h2>
+                <details>
+                    <summary>Primul anunț recomandat</summary>
+                    <p>Aici vor fi afișate detaliile primului anunț</p>
+                </details>
+                <details>
+                    <summary>Al doilea anunț recomandat</summary>
+                    <p>Aici vor fi afișate detaliile celui de-al doilea anunț</p>
+                </details>
+                <details>
+                    <summary>Al treilea anunț recomandat</summary>
+                    <p>Aici vor fi afișate detaliile celui de-al treilea anunț</p>
+                </details>
+                <details>
+                    <summary>Al patrulea anunț recomandat</summary>
+                    <p>Aici vor fi afișate detaliile celui de-al patrulea anunț</p>
+                </details>
+
+            </section>
+
+            <section id="tabel" class="tabel">
+                <div class="table-container">
+                    <table>
+                        <caption>Cele mai vândute mașini anul trecut</caption>
+                        <thead>
+                            <tr>
+                                <th>Loc</th>
+                                <th>Produs</th>
+                                <th>Categorie</th>
+                                <th>Vânzări (buc)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Vw Golf</td>
+                                <td>Hatchback</td>
+                                <td>5000</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Audi A4</td>
+                                <td>Sedan</td>
+                                <td>4500</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Skoda Kodiaq</td>
+                                <td>SUV</td>
+                                <td>3000</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>BMW X5</td>
+                                <td>SUV</td>
+                                <td>2800</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Mercedes C-Class</td>
+                                <td>Sedan</td>
+                                <td>2600</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Dacia Duster</td>
+                                <td>SUV</td>
+                                <td>2500</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Ford Focus</td>
+                                <td>Hatchback</td>
+                                <td>2400</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Renault Megane</td>
+                                <td>Hatchback</td>
+                                <td>2300</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Opel Astra</td>
+                                <td>Hatchback</td>
+                                <td>2200</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Toyota Corolla</td>
+                                <td>Sedan</td>
+                                <td>2100</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"><strong>Total vânzări</strong></td>
+                                <td><strong>32,400</strong></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">Date actualizate la sfârșitul anului</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+            
+            
+            <section class="calendar">
+                <h2>calendar</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, accusantium ullam quidem itaque vel veniam, perspiciatis recusandae vitae qui amet obcaecati. Doloremque dolorum fugit perferendis non consequuntur adipisci deleniti aliquam.</p>
+            </section>
+
+            <section class="informatii">
+                <h2>Diferite anunturi</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, accusantium ullam quidem itaque vel veniam, perspiciatis recusandae vitae qui amet obcaecati. Doloremque dolorum fugit perferendis non consequuntur adipisci deleniti aliquam.</p>
+            </section>
+
+            <section class="utilizatori_online">
+                <h2>utilizatori online</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, accusantium ullam quidem itaque vel veniam, perspiciatis recusandae vitae qui amet obcaecati. Doloremque dolorum fugit perferendis non consequuntur adipisci deleniti aliquam.</p>
+            </section>
+
+            <section class="statistici">
+                <h2>utilizatori si statistici</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, accusantium ullam quidem itaque vel veniam, perspiciatis recusandae vitae qui amet obcaecati. Doloremque dolorum fugit perferendis non consequuntur adipisci deleniti aliquam.</p>
+            </section>
+
+            <section class="date_site">
+                <h2>date despre site</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, accusantium ullam quidem itaque vel veniam, perspiciatis recusandae vitae qui amet obcaecati. Doloremque dolorum fugit perferendis non consequuntur adipisci deleniti aliquam.</p>
+            </section>
+
+            
+            <section id="vanzari_masini" class="vanzari_masini">
+                <h2>Mașini de vânzare</h2>
+                <p>La <b><abbr title="Site vânzări mașini">SVM</abbr></b>, știm cât de importantă este alegerea mașinii potrivite. De aceea, îți punem la dispoziție o selecție largă de <b>autoturisme</b> cu prețuri corecte și oferte atractive.
+                </p>
+                <section id="anunt">
+                    <h3>Anunțuri</h3>
+                    <p>Puteți sorta anunțurile în funcție de <b>motorizare, kilometraj, preț</b>. Oferim opțiuni pentru consultarea <b>istoricului</b> autoturismului!</p>
+                    <ul>
+                        <li>Anunț 1</li>
+                        <li>Anunț 2</li>
+                        <li>Anunț 3</li>
+                        <li>Anunț 4</li>
+                        <li>Anunț 5</li>
+                        <li>Anunț 6</li>
+                        <li>Anunț 7</li>
+                        <li>Anunț 8</li>
+                    </ul>
+                </section>
+
+                <section id="cumparare">
+                    <h3>Cumpără</h3>
+                    <p>Am citit <i lang="en">The Mirror</i> zilele trecute și am dat peste o scrisoare de la un cititor care a scris: „Mă deplasam cu bicicleta spre muncă când un Ferrari roșu s-a oprit lângă mine. Din geam, Jeremy Clarkson a strigat 'Ia-ți o mașină!'' și a plecat.” ~ Jeremy Clarkson</p>
+                    <p>Site-ul nostru suportă <b>plați online</b> și oferă o <b>garanție</b> contra cost de un an calendaristic. <b>Factura</b> va fi trimisă pe mail după încheierea tranzacției</p>
+                    <p>Costul garanției este calculat astfel: </p>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <mi>cost</mi>
+                        <mo>=</mo>
+                        <mrow>
+                            <mo>(</mo>
+                            <mfrac>
+                                <mi>nr_km_mașină</mi>
+                                <mn>1000</mn>
+                            </mfrac>
+                            <mo>+</mo>
+                            <mfrac>
+                                <mn>1</mn>
+                                <mn>20</mn>
+                            </mfrac>
+                            <mo>&#x22C5;</mo>  <!-- Punct de înmulțire -->
+                            <mi>prețul_mașinii</mi>
+                            <mo>)</mo>
+                            <mo>&#x22C5;</mo> 
+                            <mi>nr_ani_garanție</mi>
+                        </mrow>
+                    </math>
+                </section>
+            </section>
+            
+            <section id="adauga_anunt" class="adauga_anunt">
+                <h2>Adaugă un anunț</h2>
+                <p>
+                    Indiferent dacă ești o persoană fizică sau un <b>dealer</b> autorizat, pe <b><abbr title="Site vânzări mașini">SVM</abbr></b> oferim aceeași șansă tuturor, așa că <b>adaugă un anunț</b> gratuit cu mașina ta. Nu acceptăm oferte de promovare a anunțurilor și fiecare anunț este verificat de către o persoană autorizată, deci puteți fi sigur că pe site-ul nostru nu există oferte false.
+                </p>
+            </section>
+
+            <a href="#" id="link-top">
+                <div class="diamond">
+                    <div class="triangle"></div>
+                </div>
+                <span class="tooltip">Începutul paginii</span>
+            </a>
+            
+        </main>
+        <footer>
+
+            <h2>Date de contact</h2>
+            <a href="#">Începutul paginii</a><br>
+            <a href="tel:+40728999999">Telefon</a><br>
+            <a href="mailto:fcoman@gmail.com">Mail</a><br>
+            <a href="https://wa.me/40728999999">Whatsapp</a><br>
+            <a href="https://www.google.com/maps/place/Faculty+of+Mathematics+and+Computer+Science/@44.4355355,26.0970064,17z/data=!3m1!4b1!4m6!3m5!1s0x40b1ff472f47f047:0x493984726f0235f9!8m2!3d44.4355355!4d26.0995867!16s%2Fg%2F1td63tdh?entry=ttu&g_ep=EgoyMDI1MDIyNi4xIKXMDSoASAFQAw%3D%3D" target="_blank">Locația noastră centrală</a>
+            <br>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2848.8843011451936!2d26.097006412257667!3d44.4355354709552!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1ff472f47f047%3A0x493984726f0235f9!2sFaculty%20of%20Mathematics%20and%20Computer%20Science!5e0!3m2!1sen!2sro!4v1741013877122!5m2!1sen!2sro" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <br>
+
+
+            <section>
+                <h3>Surse</h3>
+                <ul>
+                    <li>Favicon: <a href="https://openmoji.org/library/emoji-1F3CE/">link</a></li>
+                </ul>
+            </section>
+            <small>
+                &copy; <time datetime="2024-02-24T18:00:00+03:00">24 februarie 2024</time>
+            </small>
+        </footer>
+    </body>
+</html>
