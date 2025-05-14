@@ -1,0 +1,67 @@
+$border-img: url('../imagini/border.jpg');
+
+.galerie-dinamica {
+    padding: 1rem;
+    border: 20px solid transparent;
+    border-image: $border-img 30 round;
+    max-width: 800px;
+    margin: 2rem auto;
+    position: relative;
+
+    .container-galerie {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        overflow: hidden;
+        perspective: 1000px;
+
+        .imagine-galerie {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transform-origin: top;
+            animation-fill-mode: forwards;
+
+            &.active {
+                opacity: 1;
+                z-index: 2;
+                animation: slideIn 1s ease-out;
+            }
+
+            &.animatie-iesire {
+                animation: slideOut 1s ease-in;
+                z-index: 1;
+            }
+        }
+    }
+
+    @media (max-width: 992px) {
+        display: none;
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        transform: scaleY(1) rotateX(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scaleY(0) rotateX(90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: scaleY(0) rotateX(-90deg);
+        opacity: 0;
+    }
+    100% {
+        transform: scaleY(1) rotateX(0deg);
+        opacity: 1;
+    }
+}

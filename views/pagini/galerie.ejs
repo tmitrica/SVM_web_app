@@ -9,11 +9,70 @@
         <%- include("../fragmente/galerie", { imagini: imagini, caleBase: caleBase }) %>
     </section>
 
-    <section>
+   <section class="galerie-dinamica">
+    <div class="container-galerie">
+        <% 
+        const getRandomInt = (min, max, exclude) => {
+            let val;
+            do {
+                val = Math.floor(Math.random() * (max - min + 1)) + min;
+            } while (val === exclude);
+            return val;
+        };
         
-    </section>
+        const nrImagini = getRandomInt(7, 11, 10);
+        const imaginiUnice = [...new Set([...imagini])].sort(() => 0.5 - Math.random()).slice(0, nrImagini);
+        %>
+
+        <% imaginiUnice.forEach((img, idx) => { %>
+            <img src="<%= caleBase %>/<%= img.cale_fisier %>" 
+                 class="imagine-galerie" 
+                 alt="<%= img.titlu %>"
+                 title="<%= img.text_descriere %>">
+        <% }) %>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.querySelector(".container-galerie");
+    const imagini = document.querySelectorAll(".imagine-galerie");
+    let index = 0;
+    let intervalId;
+    
+    if(imagini.length === 0) return;
+
+    function schimbaImaginea() {
+        const currentImg = imagini[index];
+        const nextIndex = (index + 1) % imagini.length;
+        const nextImg = imagini[nextIndex];
         
-   
+        currentImg.classList.add("animatie-iesire");
+        nextImg.classList.add("active");
+        
+        currentImg.addEventListener("animationend", () => {
+            currentImg.classList.remove("active", "animatie-iesire");
+        }, { once: true });
+        
+        index = nextIndex;
+    }
+
+    function pornesteAnimatia() {
+        intervalId = setInterval(schimbaImaginea, 5000);
+    }
+
+    function opresteAnimatia() {
+        clearInterval(intervalId);
+    }
+
+    imagini[0].classList.add("active");
+    pornesteAnimatia();
+
+    container.addEventListener("mouseenter", opresteAnimatia);
+    container.addEventListener("mouseleave", pornesteAnimatia);
+});
+</script>
+ 
 
     <%- include("../fragmente/footer") %>
 </body>
