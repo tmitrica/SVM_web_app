@@ -126,20 +126,6 @@ app.get(mainRoutes, async (req, res) => {
 });
 
 
-app.get("/:pagina", (req, res) => {
-    const pagina = req.params.pagina;
-    res.render(`pagini/${pagina}`, (err, html) => {
-        if (err) {
-            if (err.message.startsWith("Failed to lookup view")) {
-                afisareEroare(res, 404);
-            } else {
-                afisareEroare(res, 500);
-            }
-        } else {
-            res.send(html);
-        }
-    });
-});
 
 const galerieConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'resurse/json/galerie.json'), 'utf-8'));
 const caleGalerieOriginal = path.join(__dirname, galerieConfig.cale_galerie.replace('./', ''));
@@ -190,6 +176,7 @@ app.get('/galerie', async (req, res) => {
 
         const now = DateTime.now();
         const month = now.month;
+        //const month=10;
         let anotimp;
         
         if (month >= 3 && month <= 5) anotimp = 'primavara';
@@ -199,7 +186,7 @@ app.get('/galerie', async (req, res) => {
 
         const imaginiFiltrate = dateGalerie.imagini
             .filter(img => img.anotimp === anotimp)
-            .slice(0, 10);
+            .slice(0, 13);
 
         res.render("pagini/galerie", {
             caleBase: dateGalerie.cale_galerie,
@@ -211,6 +198,22 @@ app.get('/galerie', async (req, res) => {
         console.error("Eroare la încărcarea galeriei:", err.message);
         afisareEroare(res, 500);
     }
+});
+
+
+app.get("/:pagina", (req, res) => {
+    const pagina = req.params.pagina;
+    res.render(`pagini/${pagina}`, (err, html) => {
+        if (err) {
+            if (err.message.startsWith("Failed to lookup view")) {
+                afisareEroare(res, 404);
+            } else {
+                afisareEroare(res, 500);
+            }
+        } else {
+            res.send(html);
+        }
+    });
 });
 
 app.listen(port, () => {

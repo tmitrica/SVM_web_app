@@ -1040,8 +1040,7 @@ $animation-duration: 10s;
   }
 }
 
-
-.gallery-container {
+.galerie-statica {
   display: grid;
   gap: 40px;
   padding: 50px 5%;
@@ -1054,7 +1053,7 @@ $animation-duration: 10s;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(5, auto);
   counter-reset: gallery-counter;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
@@ -1126,6 +1125,7 @@ $animation-duration: 10s;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform: scale(0.9);
     transition: all 0.125s ease;
     transform-origin: top center;
   }
