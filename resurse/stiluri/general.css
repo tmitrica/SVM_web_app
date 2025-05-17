@@ -1089,3 +1089,159 @@ figure {
 .btn-detalii:hover {
   background: #A3002B;
 }
+
+.produse-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filtre {
+  background: #ECECEC;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(29, 29, 29, 0.1);
+}
+.filtre .filtru-grup {
+  margin-bottom: 1.5rem;
+}
+.filtre .filtru-grup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #131313;
+}
+.filtre .filtru-grup input[type=text] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #1D1D1D;
+  border-radius: 4px;
+  background: white;
+  color: #131313;
+}
+.filtre .filtru-grup .range-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.filtre .filtru-grup .range-container input[type=range] {
+  width: 100%;
+}
+.filtre .filtru-grup .range-container .range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #BFBFBF;
+}
+.filtre .filtru-grup .radio-grup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.filtre .filtru-grup .radio-grup label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: normal;
+  color: #131313;
+}
+.filtre .butoane-filtre {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.filtre .butoane-filtre button {
+  padding: 0.5rem 1rem;
+  background: #CF291D;
+  color: #ECECEC;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.filtre .butoane-filtre button:hover {
+  background: rgb(162.2669491525, 32.1398305085, 22.7330508475);
+}
+
+.produse-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+.produse-list .produs {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(29, 29, 29, 0.1);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.produse-list .produs:hover, .produse-list .produs:focus-within {
+  box-shadow: 0 4px 8px rgba(29, 29, 29, 0.15);
+  transform: translateY(-2px);
+}
+.produse-list .produs .imagine-produs {
+  flex: none;
+  width: 100%;
+}
+.produse-list .produs .imagine-produs img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.produse-list .produs .informatii-produs {
+  flex: 1;
+}
+.produse-list .produs .informatii-produs h2 {
+  margin-top: 0;
+  color: #131313;
+}
+.produse-list .produs .informatii-produs .categorie {
+  color: #BFBFBF;
+  font-style: italic;
+}
+.produse-list .produs .informatii-produs .descriere {
+  color: #131313;
+  line-height: 1.6;
+}
+.produse-list .produs .informatii-produs .caracteristici {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+}
+.produse-list .produs .informatii-produs .caracteristici td {
+  padding: 0.5rem;
+  border: 1px solid #1D1D1D;
+}
+.produse-list .produs .informatii-produs .caracteristici td:first-child {
+  font-weight: 600;
+  background: #ECECEC;
+  color: #131313;
+}
+.produse-list .produs .informatii-produs .btn-detalii {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #CF291D;
+  color: #ECECEC;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+.produse-list .produs .informatii-produs .btn-detalii:hover {
+  background: rgb(162.2669491525, 32.1398305085, 22.7330508475);
+}
+
+@media (max-width: 768px) {
+  .produse-list .produs {
+    flex-direction: column;
+  }
+  .produse-list .produs .imagine-produs {
+    flex: none;
+    width: 100%;
+  }
+}

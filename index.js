@@ -239,27 +239,22 @@ app.get('/galerie', async (req, res) => {
 
 app.get('/produse', async (req, res) => {
     try {
-        // Preluare categorii unice din DB
-        const categoriiResult = await pool.query('SELECT DISTINCT categorie_mare FROM produse');
-        const categorii = categoriiResult.rows.map(row => row.categorie_mare);
+        const { rows: produse } = await pool.query(`
+            SELECT 
+                id, nume, descriere, categorie_mare, 
+                culoare, pret, kilometraj, garantie_extensibila,
+                data_adaugare, imagine, categorie_secundara
+            FROM produse
+        `);
 
-        // Filtrul din query
-        const filterCategorie = req.query.categorie;
-
-        let query = 'SELECT * FROM produse';
-        const params = [];
+        const categorii = [...new Set(produse.map(p => p.categorie_mare))];
+        const preturi = produse.map(p => p.pret);
         
-        if(filterCategorie && filterCategorie !== 'toate') {
-            query += ' WHERE categorie_mare = $1';
-            params.push(filterCategorie);
-        }
-
-        const { rows: produse } = await pool.query(query, params);
-
         res.render('pagini/produse', {
             produse,
             categorii,
-            filterCategorie: filterCategorie || 'toate'
+            minPret: Math.min(...preturi),
+            maxPret: Math.max(...preturi)
         });
 
     } catch (err) {
