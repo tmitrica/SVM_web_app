@@ -5,6 +5,32 @@ const app = express();
 const port = 8080;
 const sharp = require('sharp');
 const { DateTime } = require("luxon");
+const { Pool } = require('pg');
+require("dotenv").config();
+
+process.env.DB_USER = "postgres";
+process.env.DB_HOST = "localhost";
+process.env.DB_NAME = "proiectweb";
+process.env.DB_PASSWORD = "parola123";
+process.env.DB_PORT = 5432;
+
+
+const pool = new Pool({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: false
+});
+
+pool.query("SELECT NOW()", (err, res) => {
+  if (err) {
+    console.error("Eroare conexiune PostgreSQL:", err);
+  } else {
+    console.log("Conectat la PostgreSQL. Timp curent:", res.rows[0].now);
+  }
+});
 
 const obGlobal = {
     obErori: null
@@ -93,6 +119,16 @@ vect_foldere.forEach(f => {
     }
 });
 
+app.use(async (req, res, next) => {
+    try {
+        // Interoghează baza de date pentru categorii
+        const categoriiResult = await pool.query('SELECT DISTINCT categorie_mare FROM produse');
+        res.locals.categorii = categoriiResult.rows.map(row => row.categorie_mare);
+        next();
+    } catch (err) {
+        next(err); // Transmite eroarea către middleware-ul de gestionare a erorilor
+    }
+});
 
 const mainRoutes = ['/', '/index', '/home'];
 app.get(mainRoutes, async (req, res) => {
@@ -124,6 +160,7 @@ app.get(mainRoutes, async (req, res) => {
         afisareEroare(res, 500);
     }
 });
+
 
 
 
@@ -200,6 +237,76 @@ app.get('/galerie', async (req, res) => {
     }
 });
 
+app.get('/produse', async (req, res) => {
+    try {
+        // Preluare categorii unice din DB
+        const categoriiResult = await pool.query('SELECT DISTINCT categorie_mare FROM produse');
+        const categorii = categoriiResult.rows.map(row => row.categorie_mare);
+
+        // Filtrul din query
+        const filterCategorie = req.query.categorie;
+
+        let query = 'SELECT * FROM produse';
+        const params = [];
+        
+        if(filterCategorie && filterCategorie !== 'toate') {
+            query += ' WHERE categorie_mare = $1';
+            params.push(filterCategorie);
+        }
+
+        const { rows: produse } = await pool.query(query, params);
+
+        res.render('pagini/produse', {
+            produse,
+            categorii,
+            filterCategorie: filterCategorie || 'toate'
+        });
+
+    } catch (err) {
+        afisareEroare(res, 500);
+    }
+});
+
+app.get('/vanzari_masini', async (req, res) => {
+    try {
+        let query = 'SELECT * FROM produse';
+        const { sortare, categorie } = req.query;
+        const params = [];
+        
+        // Filtrare
+        if (categorie) {
+            query += ' WHERE categorie_mare = $1';
+            params.push(categorie);
+        }
+
+        // Sortare
+        if (sortare === 'pret-asc') {
+            query += ' ORDER BY pret ASC';
+        } else if (sortare === 'pret-desc') {
+            query += ' ORDER BY pret DESC';
+        } else if (sortare === 'km-asc') {
+            query += ' ORDER BY kilometraj ASC';
+        }
+
+        const { rows } = await pool.query(query, params);
+        res.render('pagini/vanzari_masini', { 
+            produse: rows,
+            queryParams: req.query
+        });
+    } catch (err) {
+        afisareEroare(res, 500);
+    }
+});
+
+app.get('/produs/:id', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM produse WHERE id = $1', [req.params.id]);
+        if (!rows.length) return afisareEroare(res, 404);
+        res.render('pagini/produs', { produs: rows[0] });
+    } catch (err) {
+        afisareEroare(res, 500);
+    }
+});
 
 app.get("/:pagina", (req, res) => {
     const pagina = req.params.pagina;

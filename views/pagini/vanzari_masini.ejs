@@ -16,30 +16,48 @@
                 <h3>Anunțuri</h3>
                 <p>Puteți sorta anunțurile în funcție de <b>motorizare, kilometraj, preț</b>. Oferim opțiuni pentru consultarea <b>istoricului</b> autoturismului!</p>
                 
+                <form class="filtre">
+                    <select name="categorie">
+                        <option value="">Toate categoriile</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="Coupe">Coupe</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Convertible">Convertible</option>
+                    </select>
+
+                    <select name="sortare">
+                        <option value="">Sortează după</option>
+                        <option value="pret-asc">Preț crescător</option>
+                        <option value="pret-desc">Preț descrescător</option>
+                        <option value="km-asc">Kilometraj mic</option>
+                    </select>
+                    
+                    <button type="submit">Aplică</button>
+                </form>
+
+                <!-- Listă dinamică -->
                 <div class="lista-anunturi">
-                    <div class="anunt-item">Anunț 1</div>
-                    <hr class="efect-css-stilizare-hr">
-                    
-                    <div class="anunt-item">Anunț 2</div>
-                    <hr class="efect-css-stilizare-hr">
-                    
-                    <div class="anunt-item">Anunț 3</div>
-                    <hr class="efect-css-stilizare-hr">
-                    
-                    <div class="anunt-item">Anunț 4</div>
-                    <hr class="efect-css-stilizare-hr">
-                    
-                    <div class="anunt-item">Anunț 5</div>
-                    <hr class="efect-css-stilizare-hr">
-                    
-                    <div class="anunt-item">Anunț 6</div>
-                    <hr class="efect-css-stilizare-hr">
-                    
-                    <div class="anunt-item">Anunț 7</div>
-                    <hr class="efect-css-stilizare-hr">
-                    
-                    <div class="anunt-item">Anunț 8</div>
+                    <% produse.forEach(produs => { %>
+                        <div class="anunt-item">
+                            <img src="/resurse/imagini/<%= produs.imagine %>" alt="<%= produs.nume %>">
+                            <h4><%= produs.nume %></h4>
+                            <p>Preț: <strong><%= produs.pret %> EUR</strong></p>
+                            <p>Kilometraj: <%= produs.kilometraj %> km</p>
+                            <p>Categorie: <%= produs.categorie_mare %></p>
+                            <a href="/produs/<%= produs.id %>" class="btn-detalii">Vezi detalii</a>
+                        </div>
+                    <% }); %>
                 </div>
+
+                <script>
+                    // Pre-selectează valorile din filtre
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        document.querySelector('[name="categorie"]').value = urlParams.get('categorie') || '';
+                        document.querySelector('[name="sortare"]').value = urlParams.get('sortare') || '';
+                    });
+                </script>
             </section>
 
             <section id="cumparare">

@@ -7,61 +7,44 @@ $border-img: url('../imagini/border.jpg');
     max-width: 800px;
     margin: 2rem auto;
     position: relative;
-
-    .container-galerie {
-        position: relative;
-        width: 100%;
-        height: 500px;
-        overflow: hidden;
-        perspective: 1000px;
-
-        .imagine-galerie {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transform-origin: top;
-            animation-fill-mode: forwards;
-
-            &.active {
-                opacity: 1;
-                z-index: 2;
-                animation: slideIn 1s ease-out;
-            }
-
-            &.animatie-iesire {
-                animation: slideOut 1s ease-in;
-                z-index: 1;
-            }
-        }
-    }
-
-    @media (max-width: 992px) {
-        display: none;
-    }
+    overflow: hidden;
 }
 
-@keyframes slideOut {
-    0% {
-        transform: scaleY(1) rotateX(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: scaleY(0) rotateX(90deg);
-        opacity: 0;
-    }
+.container-galerie {
+  position: relative;
+  height: 600px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
-@keyframes slideIn {
-    0% {
-        transform: scaleY(0) rotateX(-90deg);
-        opacity: 0;
-    }
-    100% {
-        transform: scaleY(1) rotateX(0deg);
-        opacity: 1;
-    }
+.imagine-galerie {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  max-width: 900px;
+  opacity: 0;
+  transform: 
+    translate(-50%, -50%) 
+    scaleY(1);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: 50% 50%;
+  
+  &.active {
+    opacity: 1;
+    transform: 
+      translate(-50%, -50%) 
+      scaleY(1);
+    z-index: 2;
+  }
+  
+  &.animatie-iesire {
+    opacity: 0;
+    transform: 
+      translate(-50%, -50%) 
+      scaleY(0) 
+      rotateX(-90deg);
+    transform-origin: left bottom;
+    z-index: 1;
+  }
 }

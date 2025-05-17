@@ -20,6 +20,18 @@
           <li><a href="/vanzari_masini">Mașini de vânzare</a></li>
           <li><a href="/adauga-anunt">Adaugă anunț</a></li>
           <li><a href="/galerie">Galerii</a></li>
+                     <li tabindex="0">
+                        <a href="/produse">
+                            <i class="fas fa-car"></i>
+                            <span>Produse</span>
+                        </a>
+                        <ul>
+                            <li><a href="/produse?categorie=toate">Toate</a></li>
+                            <% categorii.forEach(categorie => { %>
+                                <li><a href="/produse?categorie=<%= categorie %>"><%= categorie %></a></li>
+                            <% }); %>
+                        </ul>
+                    </li>
         </ul>
       </nav>
     

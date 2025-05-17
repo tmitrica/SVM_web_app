@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<%- include("../fragmente/head") %>
+<body>
+    <%- include("../fragmente/header") %>
+    
+    <main class="produs-container">
+        <h1><%= produs.nume %></h1>
+        <div class="produs-detalii">
+            <img src="/resurse/imagini/<%= produs.imagine %>" alt="<%= produs.nume %>">
+            <div class="informatii">
+                <p class="pret">Preț: <strong><%= produs.pret %> EUR</strong></p>
+                <p>Kilometraj: <%= produs.kilometraj %> km</p>
+                <p>Categorie: <%= produs.categorie_mare %></p>
+                <p>Motor: <%= produs.categorie_secundara %></p>
+                <p>Culoare: <%= produs.culoare %></p>
+                <p>Dotări: <%= produs.dotari %></p>
+                <p>Garantie extensibilă: <%= produs.garantie_extensibila ? 'Da' : 'Nu' %></p>
+                <p>Adăugat pe: <%= new Date(produs.data_adaugare).toLocaleDateString() %></p>
+            </div>
+        </div>
+        <div class="calcul-garantie">
+            <h3>Calculează cost garanție</h3>
+            <input type="number" id="ani-garantie" placeholder="Ani garanție">
+            <button onclick="calculeazaGarantie()">Calculează</button>
+            <p id="rezultat-garantie"></p>
+        </div>
+    </main>
+
+<script>
+    function calculeazaGarantie() {
+        const aniInput = document.getElementById('ani-garantie');
+        const ani = parseFloat(aniInput.value);
+        
+        // Validare 1: Verifică dacă input-ul este un număr valid
+        if (isNaN(ani)) {
+            alert("Introduceți un număr valid pentru ani!");
+            aniInput.value = ""; // Resetează câmpul
+            return;
+        }
+        
+        // Validare 2: Verifică dacă ani este pozitiv
+        if (ani <= 0) {
+            alert("Numărul de ani trebuie să fie pozitiv!");
+            aniInput.value = "";
+            return;
+        }
+        
+        // Preluare valori direct din EJS (fără JSON.stringify)
+        const kilometraj =  produs.kilometraj
+        const pret =  produs.pret 
+        
+        // Calcul corect
+        const cost = (kilometraj / 1000 + (1/20) * pret) * ani;
+        
+        // Afișare rezultat
+        document.getElementById('rezultat-garantie').textContent = 
+            `Cost garanție: ${cost.toFixed(2)} EUR`;
+    }
+</script>
+
+    <%- include("../fragmente/footer") %>
+</body>
+</html>

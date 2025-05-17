@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<%- include("../fragmente/head") %>
+<body>
+    <%- include("../fragmente/header", {categorii: categorii}) %>
+
+    <div class="reflected-text">
+                <h2 data-text="Mașini de vânzare">Mașini de vânzare</h2>
+            </div>
+            
+            <p>La <b><abbr title="Site vânzări mașini">SVM</abbr></b>, știm cât de importantă este alegerea mașinii potrivite. De aceea, îți punem la dispoziție o selecție largă de <b>autoturisme</b> cu prețuri corecte și oferte atractive.
+            </p>
+
+    <main class="produse-container">
+        <section class="filtre">
+            <input type="text" id="filtru-text" placeholder="Filtrează după nume...">
+        </section>
+
+        <% produse.forEach(produs => { %>
+            <article id="art<%= produs.id %>" class="produs <%= produs.categorie_mare.replace(/ /g, '-') %>">
+                <div class="imagine-produs">
+                    <img src="/resurse/imagini/<%= produs.imagine %>" alt="<%= produs.nume %>">
+                </div>
+                
+                <div class="informatii-produs">
+                    <h2><%= produs.nume %></h2>
+                    <p class="categorie">Categorie: <%= produs.categorie_mare %></p>
+                    <p class="descriere"><%= produs.descriere %></p>
+                    
+                    <table class="caracteristici">
+                        <tr>
+                            <td>Kilometraj</td>
+                            <td><%= produs.kilometraj %> km</td>
+                        </tr>
+                        <tr>
+                            <td>Motor</td>
+                            <td><%= produs.categorie_secundara %></td>
+                        </tr>
+                        <tr>
+                            <td>Culoare</td>
+                            <td><%= produs.culoare %></td>
+                        </tr>
+                        <tr>
+                            <td>Data adăugării</td>
+                            <td>
+                                <time datetime="<%= produs.data_adaugare %>">
+                                    <%= new Date(produs.data_adaugare).toLocaleDateString('ro-RO', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric',
+                                        weekday: 'long'
+                                    }) %>
+                                </time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Garantie extensibilă</td>
+                            <td><%= produs.garantie_extensibila ? 'Da' : 'Nu' %></td>
+                        </tr>
+                    </table>
+
+                    <a href="/produs/<%= produs.id %>" class="btn-detalii">Vezi detalii</a>
+                </div>
+            </article>
+        <% }); %>
+    </main>
+
+    <script>
+        // Filtrare client-side
+        document.getElementById('filtru-text').addEventListener('input', function(e) {
+            const text = e.target.value.toLowerCase();
+            document.querySelectorAll('.produs').forEach(produs => {
+                const nume = produs.querySelector('h2').textContent.toLowerCase();
+                produs.style.display = nume.includes(text) ? 'flex' : 'none';
+            });
+        });
+    </script>
+
+                <section id="cumparare">
+                <h3>Cumpără</h3>
+                <p>Am citit <i lang="en">The Mirror</i> zilele trecute și am dat peste o scrisoare de la un cititor care a scris: „Mă deplasam cu bicicleta spre muncă când un Ferrari roșu s-a oprit lângă mine. Din geam, Jeremy Clarkson a strigat 'Ia-ți o mașină!'' și a plecat.” ~ Jeremy Clarkson</p>
+                <p>Site-ul nostru suportă <b>plați online</b> și oferă o <b>garanție</b> contra cost de un an calendaristic. <b>Factura</b> va fi trimisă pe mail după încheierea tranzacției</p>
+                <p>Costul garanției este calculat astfel: </p>
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mi>cost</mi>
+                    <mo>=</mo>
+                    <mrow>
+                        <mo>(</mo>
+                        <mfrac>
+                            <mi>nr_km_mașină</mi>
+                            <mn>1000</mn>
+                        </mfrac>
+                        <mo>+</mo>
+                        <mfrac>
+                            <mn>1</mn>
+                            <mn>20</mn>
+                        </mfrac>
+                        <mo>&#x22C5;</mo>  <!-- Punct de înmulțire -->
+                        <mi>prețul_mașinii</mi>
+                        <mo>)</mo>
+                        <mo>&#x22C5;</mo> 
+                        <mi>nr_ani_garanție</mi>
+                    </mrow>
+                </math>
+            </section>
+        </section>
+
+    <%- include("../fragmente/footer") %>
+</body>
+</html>
