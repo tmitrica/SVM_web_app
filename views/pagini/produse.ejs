@@ -14,8 +14,8 @@
         <section class="filtre">
             <div class="filtru-grup">
                 <label for="filtru-nume">Nume produs:</label>
-                <input type="text" id="filtru-nume" placeholder="Ex: r*ie">
-                <small>Suportă wildcard (*)</small>
+                <input type="text" id="filtru-nume" placeholder="Ex: au*4">
+                <small>Puteti folosi * daca nu sunteti sigur de nume</small>
             </div>
 
             <div class="filtru-grup">
@@ -167,8 +167,9 @@
     });
 
     function convertPatternToRegex(pattern) {
-        const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regexStr = `^${escaped.replace(/\*/g, '.*')}$`;
+        const parts = pattern.split('*')
+            .map(part => part.replace(/[.+?^${}()|[\]\\]/g, '\\$&'));
+        const regexStr = '^' + parts.join('.*') + '$';
         return new RegExp(regexStr, 'i');
     }
 
@@ -178,7 +179,7 @@
     }
 
     function aplicaFiltre() {
-        const numePattern = document.getElementById('filtru-nume').value;
+        const numePattern = document.getElementById('filtru-nume').value.trim();
         const pretMinVal = parseInt(document.getElementById('pret-min').value);
         const pretMaxVal = parseInt(document.getElementById('pret-max').value);
         const categorie = document.getElementById('filtru-categorie').value;
@@ -266,7 +267,7 @@
         div.style.padding = '15px';
         div.style.background = '#fff';
         div.style.border = '2px solid #333';
-        div.textContent = `Suma: ${suma}, Medie: ${medie}, Min: ${min}, Max: ${max}`;
+        div.textContent = 'Suma: ${suma}, Medie: ${medie}, Min: ${min}, Max: ${max}';
 
         document.body.appendChild(div);
         setTimeout(() => div.remove(), 2000);

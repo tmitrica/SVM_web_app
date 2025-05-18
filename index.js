@@ -80,6 +80,8 @@ function afisareEroare(res, identificator, titlu, text, imagine) {
     res.render("pagini/eroare", dateEroare);
 }
 
+
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -88,6 +90,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use("/resurse", express.static(path.join(__dirname, "resurse")));
 app.use("/resurse", (req, res, next) => {
     if (path.extname(req.path) === '') {
@@ -239,28 +242,39 @@ app.get('/galerie', async (req, res) => {
 
 app.get('/produse', async (req, res) => {
     try {
-        const { rows: produse } = await pool.query(`
+        const categorie = req.query.categorie;
+
+        let query = `
             SELECT 
                 id, nume, descriere, categorie_mare, 
                 culoare, pret, kilometraj, garantie_extensibila,
                 data_adaugare, imagine, categorie_secundara
             FROM produse
-        `);
+        `;
 
-        const categorii = [...new Set(produse.map(p => p.categorie_mare))];
+        const params = [];
+
+        if (categorie && categorie.toLowerCase() !== 'toate') {
+            query += ` WHERE categorie_mare = $1`;
+            params.push(categorie);
+        }
+
+        const { rows: produse } = await pool.query(query, params);
+
         const preturi = produse.map(p => p.pret);
-        
+
         res.render('pagini/produse', {
             produse,
-            categorii,
-            minPret: Math.min(...preturi),
-            maxPret: Math.max(...preturi)
+            categorii: res.locals.categorii,
+            minPret: preturi.length ? Math.min(...preturi) : 0,
+            maxPret: preturi.length ? Math.max(...preturi) : 0
         });
 
     } catch (err) {
         afisareEroare(res, 500);
     }
 });
+
 
 app.get('/vanzari_masini', async (req, res) => {
     try {
