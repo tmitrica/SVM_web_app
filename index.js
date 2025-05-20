@@ -24,6 +24,16 @@ const pool = new Pool({
     ssl: false
 });
 
+app.locals.formatDate = (date) => {
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    return new Date(date).toLocaleDateString('ro-RO', options);
+};
+
 pool.query("SELECT NOW()", (err, res) => {
   if (err) {
     console.error("Eroare conexiune PostgreSQL:", err);
@@ -331,7 +341,6 @@ app.get("/:pagina", (req, res) => {
         }
     });
 });
-
 
 
 app.listen(port, () => {

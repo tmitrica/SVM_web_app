@@ -2,258 +2,300 @@
 <html lang="ro">
 <%- include("../fragmente/head") %>
 <body class="bg-light">
-    <%- include("../fragmente/header", {categorii: categorii}) %>
+  <%- include("../fragmente/header", {categorii}) %>
 
-    <div class="container mt-5">
-        <div class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-primary">Mașini de vânzare</h1>
-        </div>
-
-        <div>
-            <!-- Sectiune Filtre -->
-            <section class="filtre bg-white p-4 rounded-3 shadow-sm mb-5">
-                <div class="row g-4">
-                    <!-- Filtru Nume -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="filtru-nume" placeholder=" ">
-                            <label for="filtru-nume">Nume mașină</label>
-                        </div>
-                    </div>
-
-                    <!-- Filtru Pret -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 p-3">
-                            <label class="form-label fw-medium mb-3">Interval preț (€)</label>
-                            <input type="range" class="form-range mb-3" id="pret-min">
-                            <input type="range" class="form-range" id="pret-max">
-                            <div class="d-flex justify-content-between">
-                                <span id="pret-min-afis" class="badge bg-primary"></span>
-                                <span id="pret-max-afis" class="badge bg-primary"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filtru Categorie -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 p-3">
-                            <div class="form-floating">
-                                <select class="form-select" id="filtru-categorie">
-                                    <option value="">Toate categoriile</option>
-                                    <% categorii.forEach(categorie => { %>
-                                        <option value="<%= categorie %>"><%= categorie %></option>
-                                    <% }) %>
-                                </select>
-                                <label for="filtru-categorie">Categorie</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filtru Culoare -->
-                    <div class="col-12">
-                        <div class="card p-3">
-                            <label class="form-label fw-medium mb-3">Culoare</label>
-                            <div class="d-flex flex-wrap gap-2">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="culoare" id="culoare-toate" value="" checked>
-                                    <label class="form-check-label" for="culoare-toate">Toate</label>
-                                </div>
-                                <% [...new Set(produse.map(p => p.culoare))].forEach(culoare => { %>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="culoare" id="culoare-<%= culoare %>" value="<%= culoare %>">
-                                        <label class="form-check-label" for="culoare-<%= culoare %>"><%= culoare %></label>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filtru Garantie -->
-                    <div class="col-12">
-                        <div class="card p-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="filtru-garantie">
-                                <label class="form-check-label fw-medium" for="filtru-garantie">Cu garanție extensibilă</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Butoane Actiuni -->
-                <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
-                    <button class="btn btn-primary px-4" id="filtreaza">
-                        <i class="bi bi-funnel me-2"></i>Filtrează
-                    </button>
-                    <button class="btn btn-outline-primary" id="sorteaza-asc">
-                        <i class="bi bi-sort-alpha-down me-2"></i>A-Z
-                    </button>
-                    <button class="btn btn-outline-primary" id="sorteaza-desc">
-                        <i class="bi bi-sort-alpha-up me-2"></i>Z-A
-                    </button>
-                    <button class="btn btn-success" id="calculeaza">
-                        <i class="bi bi-calculator me-2"></i>Calculează
-                    </button>
-                    <button class="btn btn-danger" id="reseteaza">
-                        <i class="bi bi-arrow-counterclockwise me-2"></i>Resetează
-                    </button>
-                </div>
-            </section>
-
-            <!-- Lista Produse -->
-            <section class="produse-list row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-                <% produse.forEach(produs => { %>
-                <div class="col">
-                    <article class="produs card h-100 shadow-sm"
-                        data-categorie="<%= produs.categorie_mare %>"
-                        data-culoare="<%= produs.culoare %>"
-                        data-pret="<%= produs.pret %>"
-                        data-garantie="<%= produs.garantie_extensibila %>"
-                        data-nume="<%= produs.nume.toLowerCase() %>">
-                        
-                        <div class="card-img-top ratio ratio-16x9">
-                            <img src="../../resurse/imagini/<%= produs.imagine %>" 
-                                 class="img-fluid object-fit-cover w-100 h-100"
-                                 alt="<%= produs.nume %>">
-                        </div>
-                        
-                        <div class="card-body d-flex flex-column">
-                            <h2 class="card-title fs-5 fw-bold"><%= produs.nume %></h2>
-                            <span class="badge bg-secondary mb-2"><%= produs.categorie_mare %></span>
-                            <p class="card-text flex-grow-1"><%= produs.descriere %></p>
-                            
-                            <table class="table table-sm mb-3">
-                                <tbody>
-                                    <tr>
-                                        <td class="fw-medium">Preț</td>
-                                        <td class="text-end"><%= produs.pret %> €</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-medium">Kilometraj</td>
-                                        <td class="text-end"><%= produs.kilometraj %> km</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-medium">Culoare</td>
-                                        <td class="text-end"><%= produs.culoare %></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <a href="/produs/<%= produs.id %>" class="btn btn-primary w-100 mt-auto">
-                                <i class="bi bi-info-circle me-2"></i>Detalii complete
-                            </a>
-                        </div>
-                    </article>
-                </div>
-                <% }); %>
-            </section>
-        </div>
+  <div class="container mt-5">
+    <div class="text-center mb-5">
+      <h1 class="display-4 fw-bold text-primary">Mașini de vânzare</h1>
     </div>
 
-    <%- include("../fragmente/footer") %>
+    <!-- ►►► Secțiune Filtre ◄◄◄ -->
+    <section class="filtre bg-white p-4 rounded-3 shadow-sm mb-5">
+      <div class="row g-4">
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const products = Array.from(document.querySelectorAll('.produse-list .col'));
-            const pretMin = document.getElementById('pret-min');
-            const pretMax = document.getElementById('pret-max');
-            
-            // Inițializare valori preț
-            const preturi = products.map(p => parseInt(p.querySelector('.produs').dataset.pret));
-            const minPrice = Math.min(...preturi);
-            const maxPrice = Math.max(...preturi);
-            
-            pretMin.min = minPrice;
-            pretMin.max = maxPrice;
-            pretMin.value = minPrice;
-            pretMax.min = minPrice;
-            pretMax.max = maxPrice;
-            pretMax.value = maxPrice;
-            document.getElementById('pret-min-afis').textContent = minPrice;
-            document.getElementById('pret-max-afis').textContent = maxPrice;
+        <!-- 1. Text (nume cu wildcard) -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="filtru-nume" class="form-label">Nume mașină</label>
+          <input type="text" id="filtru-nume" class="form-control" placeholder="ex: r*ie">
+        </div>
 
-            // Funcție filtrare
-            const aplicaFiltre = () => {
-                const nume = document.getElementById('filtru-nume').value.toLowerCase();
-                const pretMinVal = parseInt(pretMin.value);
-                const pretMaxVal = parseInt(pretMax.value);
-                const categorie = document.getElementById('filtru-categorie').value;
-                const culoare = document.querySelector('input[name="culoare"]:checked').value;
-                const garantie = document.getElementById('filtru-garantie').checked;
+        <!-- 2. Range (preț între) -->
+        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+          <label class="me-2">Preț între</label>
+          <span id="min-range-label"></span>
+          <input type="range" id="pret-min" class="form-range mx-2"
+                 min="<%= Math.min(...produse.map(p=>p.pret)) %>"
+                 max="<%= Math.max(...produse.map(p=>p.pret)) %>"
+                 value="<%= Math.min(...produse.map(p=>p.pret)) %>">
+          <input type="range" id="pret-max" class="form-range mx-2"
+                 min="<%= Math.min(...produse.map(p=>p.pret)) %>"
+                 max="<%= Math.max(...produse.map(p=>p.pret)) %>"
+                 value="<%= Math.max(...produse.map(p=>p.pret)) %>">
+          <span id="max-range-label"></span>
+        </div>
 
-                products.forEach(produs => {
-                    const data = produs.querySelector('.produs').dataset;
-                    const matches = {
-                        nume: data.nume.includes(nume) || nume === '',
-                        pret: data.pret >= pretMinVal && data.pret <= pretMaxVal,
-                        categorie: data.categorie === categorie || categorie === '',
-                        culoare: data.culoare === culoare || culoare === '',
-                        garantie: !garantie || data.garantie === 'true'
-                    };
-                    
-                    produs.style.display = Object.values(matches).every(v => v) ? 'block' : 'none';
-                });
-            };
+        <!-- 3. Datalist (motor) -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="filtru-motor" class="form-label">Motor</label>
+          <input list="motor-options" id="filtru-motor" class="form-control">
+          <datalist id="motor-options">
+            <% [...new Set(produse.map(p=>p.categorie_secundara))].forEach(m=>{ %>
+              <option value="<%= m %>">
+            <% }) %>
+          </datalist>
+        </div>
 
-            // Evenimente
-            pretMin.addEventListener('input', () => {
-                document.getElementById('pret-min-afis').textContent = pretMin.value;
-                aplicaFiltre();
-            });
+        <!-- 4. Radio (culoare) -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <label class="form-label d-block">Culoare</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="culoare" id="culoare-orice" value="" checked>
+            <label class="form-check-label" for="culoare-orice">Orice</label>
+          </div>
+          <% [...new Set(produse.map(p=>p.culoare))].forEach(c=>{ %>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="culoare" id="culoare-<%=c%>" value="<%=c%>">
+              <label class="form-check-label" for="culoare-<%=c%>"><%=c%></label>
+            </div>
+          <% }) %>
+        </div>
 
-            pretMax.addEventListener('input', () => {
-                document.getElementById('pret-max-afis').textContent = pretMax.value;
-                aplicaFiltre();
-            });
+        <!-- 5. Checkbox (garanție) -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="filtru-garantie">
+            <label class="form-check-label" for="filtru-garantie">Doar cu garanție</label>
+          </div>
+        </div>
 
-            document.querySelectorAll('#filtru-nume, #filtru-categorie, #filtru-garantie, input[name="culoare"]')
-                .forEach(el => el.addEventListener('input', aplicaFiltre));
+        <!-- 6. Textarea (descriere conține) -->
+        <div class="col-12">
+          <label for="filtru-desc" class="form-label">Text în descriere</label>
+          <textarea id="filtru-desc" rows="2" class="form-control" placeholder="Caută un cuvânt…"></textarea>
+        </div>
 
-            // Sortare
-            const sortProduse = (asc = true) => {
-                const container = document.querySelector('.produse-list');
-                const visibleProducts = products.filter(p => p.style.display !== 'none');
-                
-                visibleProducts.sort((a, b) => {
-                    const numeA = a.querySelector('.card-title').textContent.toLowerCase();
-                    const numeB = b.querySelector('.card-title').textContent.toLowerCase();
-                    return asc ? numeA.localeCompare(numeB) : numeB.localeCompare(numeA);
-                });
+        <!-- 7. Select simplu (categorie) -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="filtru-categorie" class="form-label">Categorie</label>
+          <select id="filtru-categorie" class="form-select">
+            <option value="">Oricare</option>
+            <% categorii.forEach(cat=>{ %>
+              <option value="<%=cat%>"><%=cat%></option>
+            <% }) %>
+          </select>
+        </div>
 
-                container.innerHTML = '';
-                visibleProducts.forEach(p => container.appendChild(p));
-            };
+        <!-- 8. Select multiplu (kilometraj) -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="filtru-km" class="form-label">Kilometraj (alege interval)</label>
+          <select id="filtru-km" class="form-select" multiple>
+            <option value="0-50000">0‑50.000 km</option>
+            <option value="50000-100000">50.000‑100.000 km</option>
+            <option value="100000-200000">100.000‑200.000 km</option>
+          </select>
+        </div>
 
-            document.getElementById('sorteaza-asc').addEventListener('click', () => sortProduse(true));
-            document.getElementById('sorteaza-desc').addEventListener('click', () => sortProduse(false));
+      </div>
 
-            // Resetare
-            document.getElementById('reseteaza').addEventListener('click', () => {
-                pretMin.value = minPrice;
-                pretMax.value = maxPrice;
-                document.getElementById('pret-min-afis').textContent = minPrice;
-                document.getElementById('pret-max-afis').textContent = maxPrice;
-                document.getElementById('filtru-nume').value = '';
-                document.getElementById('filtru-categorie').value = '';
-                document.querySelector('#culoare-toate').checked = true;
-                document.getElementById('filtru-garantie').checked = false;
-                products.forEach(p => p.style.display = 'block');
-                sortProduse(true);
-            });
+      <!-- Butoane actiuni -->
+      <div class="mt-4 text-center">
+        <button id="filtreaza"     class="btn btn-primary px-4"><i class="bi bi-funnel me-2"></i>Filtrează</button>
+        <button id="sorteaza-asc"  class="btn btn-outline-primary"><i class="bi bi-sort-alpha-down me-2"></i>A‑Z</button>
+        <button id="sorteaza-desc" class="btn btn-outline-primary"><i class="bi bi-sort-alpha-up me-2"></i>Z‑A</button>
+        <button id="calculeaza"    class="btn btn-success"><i class="bi bi-calculator me-2"></i>Calculează</button>
+        <button id="reseteaza"     class="btn btn-danger"><i class="bi bi-arrow-counterclockwise me-2"></i>Resetează</button>
+      </div>
+    </section>
 
-            // Calcul statistici
-            document.getElementById('calculeaza').addEventListener('click', () => {
-                const visibleProducts = products.filter(p => p.style.display !== 'none');
-                const preturi = visibleProducts.map(p => parseInt(p.querySelector('.produs').dataset.pret));
-                
-                const suma = preturi.reduce((a, b) => a + b, 0);
-                const medie = preturi.length ? (suma / preturi.length).toFixed(2) : 0;
-                
-                alert(`Statistici preț:\n
-                    Total: ${suma} €\n
-                    Medie: ${medie} €\n
-                    Mașini afișate: ${visibleProducts.length}`);
-            });
-        });
-    </script>
+    <!-- ►►► Lista Produse ◄◄◄ -->
+    <section class="produse-list row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+      <% produse.forEach(produs => { %>
+        <div class="col">
+          <article class="produs card h-100 shadow-sm"
+                   data-categorie="<%= produs.categorie_mare %>"
+                   data-culoare="<%= produs.culoare %>"
+                   data-pret="<%= produs.pret %>"
+                   data-kilometraj="<%= produs.kilometraj %>"
+                   data-garantie="<%= produs.garantie_extensibila %>"
+                   data-nume="<%= produs.nume.toLowerCase() %>"
+                   data-categorie-secundara="<%= produs.categorie_secundara.toLowerCase() %>">
+            <div class="card-body d-flex flex-column">
+              <div class="row g-3">
+                <div class="col-md-5">
+                  <img src="../../resurse/imagini/<%= produs.imagine %>" 
+                       class="img-fluid rounded-3" 
+                       alt="<%= produs.nume %>"
+                       style="height: 200px; object-fit: cover;">
+                </div>
+                <div class="col-md-7">
+                  <h2 class="card-title fs-5 fw-bold mb-3"><%= produs.nume %></h2>
+                  <span class="badge bg-secondary mb-2"><%= produs.categorie_mare %></span>
+                  <table class="table table-sm mb-3">
+                    <tbody>
+                      <tr><td class="fw-medium">Preț</td>      <td class="text-end"><%= produs.pret %> €</td></tr>
+                      <tr><td class="fw-medium">Kilometraj</td><td class="text-end"><%= produs.kilometraj %> km</td></tr>
+                      <tr><td class="fw-medium">Motor</td>     <td class="text-end"><%= produs.categorie_secundara %></td></tr>
+                      <tr><td class="fw-medium">Culoare</td>   <td class="text-end"><%= produs.culoare %></td></tr>
+                      <tr><td class="fw-medium">Adăugat</td>   <td class="text-end"><%= formatDate(produs.data_adaugare) %></td></tr>
+                      <tr><td class="fw-medium">Garanție</td>  <td class="text-end"><%= produs.garantie_extensibila ? 'Da' : 'Nu' %></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="mt-auto">
+                <p class="card-text"><%= produs.descriere %></p>
+                <a href="/produs/<%= produs.id %>" class="btn btn-primary w-100">
+                  <i class="bi bi-info-circle me-2"></i>Detalii complete
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      <% }) %>
+    </section>
+  </div>
+
+  <%- include("../fragmente/footer") %>
+
+  <!-- ►►► SCRIPT: filtre, sortare, reset, calcul ◄◄◄ -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container      = document.querySelector('.produse-list');
+    let products         = Array.from(container.children);
+    const originalOrder  = products.map(c => c.cloneNode(true));
+
+    // ----- elemente DOM filtre & butoane -----
+    const numeInput      = document.getElementById('filtru-nume');
+    const pretMinInput   = document.getElementById('pret-min');
+    const pretMaxInput   = document.getElementById('pret-max');
+    const motorInput     = document.getElementById('filtru-motor');
+    const culoareInputs  = Array.from(document.querySelectorAll('input[name="culoare"]'));
+    const garantieInput  = document.getElementById('filtru-garantie');
+    const descInput      = document.getElementById('filtru-desc');
+    const categorieInput = document.getElementById('filtru-categorie');
+    const kmSelect       = document.getElementById('filtru-km');
+    const btnFiltreaza   = document.getElementById('filtreaza');
+    const btnSortAsc     = document.getElementById('sorteaza-asc');
+    const btnSortDesc    = document.getElementById('sorteaza-desc');
+    const btnReseteaza   = document.getElementById('reseteaza');
+    const btnCalculeaza  = document.getElementById('calculeaza');
+
+    // actualizare etichete range
+    function updateRangeLabels() {
+      document.getElementById('min-range-label').textContent = pretMinInput.value + '€';
+      document.getElementById('max-range-label').textContent = pretMaxInput.value + '€';
+    }
+    pretMinInput.addEventListener('input', updateRangeLabels);
+    pretMaxInput.addEventListener('input', updateRangeLabels);
+    updateRangeLabels();
+
+    // filtrare generală
+    function aplicaFiltre() {
+      const pattern = new RegExp('^' + numeInput.value.replace(/\*/g,'.*') + '$','i');
+      const pMin    = +pretMinInput.value, pMax = +pretMaxInput.value;
+      const motor   = motorInput.value.trim().toLowerCase();
+      const culoare = culoareInputs.find(r=>r.checked).value;
+      const doarGar = garantieInput.checked;
+      const textDesc= descInput.value.toLowerCase();
+      const cat     = categorieInput.value;
+      const kmRanges = Array.from(kmSelect.selectedOptions).map(o=>o.value);
+
+      products.forEach(col => {
+        const card  = col.querySelector('.produs');
+        const d     = card.dataset;
+        const pret  = +d.pret;
+        const nume  = d.nume.toLowerCase();
+        const motorP= (d.categorieSecundara||d.motor||'').toLowerCase();
+        const desc  = card.querySelector('.card-text').textContent.toLowerCase();
+        const km    = +d.kilometraj;
+        const gar   = d.garantie === 'true';
+
+        let kmOk = true;
+        if (kmRanges.length) {
+          kmOk = kmRanges.some(r => {
+            const [lo,hi] = r.split('-').map(Number);
+            return km >= lo && km <= hi;
+          });
+        }
+
+        const ok = 
+          (!numeInput.value   || pattern.test(nume)) &&
+          pret >= pMin && pret <= pMax &&
+          (!motor || motorP === motor) &&
+          (!culoare || d.culoare === culoare) &&
+          (!doarGar || gar) &&
+          (!textDesc || desc.includes(textDesc)) &&
+          (!cat     || d.categorie === cat) &&
+          kmOk;
+
+        col.style.display = ok ? '' : 'none';
+      });
+    }
+
+    // sortare A‑Z / Z‑A
+    function sortProduse(asc) {
+      const viz = products.filter(c=>c.style.display!=='none');
+      viz.sort((a,b) => {
+        const na = a.querySelector('.card-title').textContent.toLowerCase();
+        const nb = b.querySelector('.card-title').textContent.toLowerCase();
+        return asc ? na.localeCompare(nb) : nb.localeCompare(na);
+      });
+      container.innerHTML = '';
+      viz.forEach(c => container.appendChild(c));
+      products = Array.from(container.children);
+    }
+
+    // resetare completă
+    function resetAll() {
+      if (!confirm('Sigur vrei să resetezi filtrele și sortarea?')) return;
+      numeInput.value = '';
+      pretMinInput.value = pretMinInput.min;
+      pretMaxInput.value = pretMaxInput.max;
+      updateRangeLabels();
+      motorInput.value = '';
+      culoareInputs.find(r=>r.id==='culoare-orice').checked = true;
+      garantieInput.checked = false;
+      descInput.value = '';
+      categorieInput.value = '';
+      kmSelect.selectedIndex = -1;
+      container.innerHTML = '';
+      originalOrder.forEach(c => container.appendChild(c.cloneNode(true)));
+      products = Array.from(container.children);
+    }
+
+    // calcul statistici
+    function calculeaza() {
+      const viz = products.filter(c=>c.style.display!=='none');
+      const preturi = viz.map(c=>+c.querySelector('.produs').dataset.pret);
+      if (!preturi.length) return alert('Nu e niciun produs afișat!');
+      const total = preturi.reduce((a,b)=>a+b,0);
+      const medie = (total/preturi.length).toFixed(2);
+      const mini  = Math.min(...preturi);
+      const maxi  = Math.max(...preturi);
+      const stats = document.createElement('div');
+      stats.className = 'position-fixed bottom-0 end-0 m-3 p-3 bg-white shadow-lg rounded-3';
+      stats.innerHTML = `
+        <h5>Statistici Preț</h5>
+        <ul class="list-unstyled mb-0">
+          <li>Total: ${total}€</li>
+          <li>Medie: ${medie}€</li>
+          <li>Minim: ${mini}€</li>
+          <li>Maxim: ${maxi}€</li>
+        </ul>`;
+      document.body.appendChild(stats);
+      setTimeout(()=> stats.remove(), 2000);
+    }
+
+    // legare evenimente
+    btnFiltreaza.addEventListener('click', aplicaFiltre);
+    btnSortAsc.  addEventListener('click', ()=>sortProduse(true));
+    btnSortDesc. addEventListener('click', ()=>sortProduse(false));
+    btnReseteaza.addEventListener('click', resetAll);
+    btnCalculeaza.addEventListener('click', calculeaza);
+    categorieInput.addEventListener('change', aplicaFiltre);
+    kmSelect.addEventListener('change', aplicaFiltre);
+
+  });
+  </script>
 </body>
 </html>
