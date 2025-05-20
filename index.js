@@ -332,6 +332,8 @@ app.get("/:pagina", (req, res) => {
     });
 });
 
+
+
 app.listen(port, () => {
     console.log(`Serverul rulează la adresa http://localhost:${port}`);
 });
