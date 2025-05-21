@@ -29,17 +29,17 @@ $transition-time: 0.3s;
 }
 
 body {
-  --color-primary: #{$color-primary};
-  --color-secondary: #{$color-secondary};
-  --color-text-light: #{$color-text-light};
-  --color-text-dark: #{$color-text-dark};
-  --color-border: #{$color-border};
-  --color-visited: #{$color-visited};
-  background-color: $color-text-light;
-  color: $color-text-dark;
-  font-family: Arial, sans-serif;
-  font-size: 1rem;
-  @include transition(font-size);
+   --color-primary: #{$color-primary};
+   --color-secondary: #{$color-secondary};
+   --color-text-light: #{$color-text-light};
+   --color-text-dark: #{$color-text-dark};
+   --color-border: #{$color-border};
+   --color-visited: #{$color-visited};
+   background-color: $color-text-light;
+   color: $color-text-dark;
+   font-family: Arial, sans-serif;
+   font-size: 1rem;
+   @include transition(font-size);
 }
 
 nav {
