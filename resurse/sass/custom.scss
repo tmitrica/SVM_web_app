@@ -1,76 +1,455 @@
+// 0. Variabile Sass pentru Bootstrap și componente
+$primary: #CF291D !default;
+$secondary: #BFBFBF !default;
+
 // Butoane
-$btn-border-radius: 0.5rem;
-$btn-border-width: 2px;
-$btn-padding-y: 0.5rem;
-$btn-padding-x: 1rem;
+$btn-border-radius: 0.5rem !default;
+$btn-border-width: 2px !default;
+$btn-padding-y: 0.5rem !default;
+$btn-padding-x: 1rem !default;
 
 // Range Input
-$form-range-thumb-width: 1.5rem;
-$form-range-thumb-height: 1.5rem;
-$form-range-thumb-bg: $primary;
-$form-range-thumb-border: 0;
-$form-range-track-bg: $secondary;
+$form-range-thumb-width: 1.5rem !default;
+$form-range-thumb-height: 1.5rem !default;
+$form-range-thumb-bg: $primary !default;
+$form-range-thumb-border: 0 !default;
+$form-range-track-bg: $secondary !default;
 
 // Inputuri
-$input-border-radius: 0.5rem;
-$input-border-width: 2px;
-$input-padding-y: 0.5rem;
-$input-padding-x: 1rem;
-$input-focus-border-color: $primary;
-$input-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+$input-border-radius: 0.5rem !default;
+$input-border-width: 2px !default;
+$input-padding-y: 0.5rem !default;
+$input-padding-x: 1rem !default;
+$input-focus-border-color: $primary !default;
+$input-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25) !default;
 
-@import "../../node_modules/bootstrap/scss/bootstrap";
-
-// Stiluri personalizate
-.produse-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem; // spațiu între carduri
-    justify-content: center;
-
-    .card {
-        flex: 0 0 350px; // crește lățimea cardului (poți merge și mai mult)
-        max-width: 100%;
-        min-height: 500px;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        transition: transform 0.3s;
-
-        &:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-img-top {
-            border-bottom: 2px solid $border-color;
-            object-fit: cover;
-            height: 200px;
-            width: 100%;
-        }
-
-        .card-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 1px;
-            min-height: 350px;
-
-            table {
-                width: 100%;
-                table-layout: auto;
-            }
-
-            .row {
-                .col-md-5 img {
-                    height: 240px !important;
-                }
-
-                .col-md-7 {
-                    padding-right: 1rem;
-                }
-            }
-        }
-    }
+// 1. Override CSS-vars înainte de Bootstrap
+:root {
+  --color-primary: #CF291D;
+  --color-secondary: #BFBFBF;
+  --color-text-light: #ECECEC;
+  --color-text-dark: #131313;
+  --color-border: #1D1D1D;
+  --color-visited: #A3002B;
+  --nav-height: 60px;
+  --submenu-width: 220px;
+  --transition-time: 0.3s;
+  --color-primary-hover: #a72017;
+  --color-primary-darken-5: #b82319;
+  --color-primary-darken-8: #a11d15;
+  --color-primary-darken-10: #8a1811;
+  --color-primary-darken-15: #73130e;
 }
 
+:root[data-theme="dark"] {
+  --color-primary: #FF6B6B;
+  --color-secondary: #4ECDC4;
+  --color-text-light: #2D2D2D;
+  --color-text-dark: #FFFFFF;
+  --color-border: #555555;
+  --color-visited: #FFAAAA;
+}
+
+// 2. Mixin-uri
+@mixin transition($prop) {
+  transition: #{$prop} var(--transition-time) ease;
+}
+
+@mixin gradient-bar($pos) {
+  content: '';
+  position: absolute;
+  top: 0;
+  #{$pos}: 0;
+  width: 3px;
+  height: 0;
+  background: linear-gradient(to bottom, var(--color-text-light), var(--color-border));
+  @include transition(all);
+}
+
+// 3. Import Bootstrap
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// 4. Stiluri Meniu
+nav {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: var(--color-primary);
+    z-index: 100;
+
+    > li {
+      position: relative;
+
+      > a {
+        display: flex;
+        align-items: center;
+        padding: 0 25px;
+        line-height: var(--nav-height);
+        color: var(--color-text-light);
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1rem;
+        @include transition(all);
+
+        &:hover {
+          background-color: var(--color-primary-hover);
+          font-size: 1.1rem;
+        }
+
+        .fa-home {
+          display: none;
+          margin-right: 8px;
+        }
+      }
+
+      ul {
+        position: absolute;
+        top: var(--nav-height);
+        left: 0;
+        width: var(--submenu-width);
+        background-color: var(--color-primary-darken-5);
+        transform: scaleY(0);
+        transform-origin: top;
+        @include transition(transform);
+        box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+        flex-direction: column;
+
+        li {
+          > a {
+            position: relative;
+            padding: 12px 25px;
+            display: block;
+            color: var(--color-text-light);
+            white-space: nowrap;
+
+            &::before { @include gradient-bar('left'); }
+            &::after  { @include gradient-bar('right'); }
+
+            &:hover {
+              background-color: var(--color-primary-darken-15);
+              &::before, &::after { height: 100%; }
+            }
+          }
+        }
+      }
+
+      &:hover > ul {
+        transform: scaleY(1);
+      }
+
+      // Switch temă în meniul principal
+      &.theme-toggle-item {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+
+        .theme-switch {
+          position: relative;
+          width: 48px;
+          height: 24px;
+
+          input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+
+            &:not(:checked) + .slider {
+            background-color: var(--color-secondary);
+            }
+            &:not(:checked) + .slider::before {
+            transform: translateX(24px);
+            }
+        }
+
+          .slider {
+            position: absolute;
+            inset: 0;
+            background-color: var(--color-border);
+            border-radius: 24px;
+            transition: .4s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+            box-sizing: border-box;
+
+            i { font-size: 0.8rem; color: var(--color-text-light); }
+
+            &::before {
+              content: "";
+              position: absolute;
+              height: 18px; width: 18px;
+              left: 3px; bottom: 3px;
+              background-color: white;
+              border-radius: 50%;
+              transition: .4s;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .menu-toggle {
+    display: none;
+    cursor: pointer;
+    padding: 15px;
+    color: var(--color-text-light);
+    font-size: 1.5rem;
+  }
+
+  // Responsive
+  @media (max-width: 1024px) {
+    ul {
+      display: flex;
+      align-items: center;
+      > li > a { padding: 0 15px; font-size: 0.9rem; }
+    }
+  }
+  @media (max-width: 768px) {
+    position: relative;
+    min-height: var(--nav-height);
+
+    .menu-toggle { display: block; }
+
+    > ul {
+      position: absolute;
+      top: var(--nav-height);
+      left: 0;
+      width: 100%;
+      background: var(--color-primary);
+      flex-direction: column;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    &:hover > ul, &:focus-within > ul {
+      transform: scaleY(1);
+      pointer-events: auto;
+    }
+    > ul > li {
+      width: 100%;
+      > a { padding: 15px; }
+      > ul {
+        background: var(--color-primary-darken-8);
+        transform: scaleY(0);
+        height: 0;
+        transition: transform 0.3s ease;
+      }
+      &:hover > ul { transform: scaleY(1); height: auto; }
+      &:hover, &:focus-within { margin-bottom: 150px; }
+    }
+  }
+} // închidere nav
+
+// 5. Lista de produse
+.produse-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+
+  .card {
+    flex: 0 0 350px;
+    max-width: 100%;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s;
+
+    &:hover { transform: translateY(-5px); }
+
+    .card-img-top {
+      border-bottom: 2px solid var(--color-border);
+      object-fit: cover;
+      height: 200px;
+      width: 100%;
+    }
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1px;
+      min-height: 350px;
+
+      table {
+        width: 100%;
+        table-layout: auto;
+      }
+      .row {
+        .col-md-5 img { height: 240px !important; }
+        .col-md-7 { padding-right: 1rem; }
+      }
+    }
+  }
+}
+
+// 6. Range input (slider)
+.form-range {
+  &::-webkit-slider-runnable-track {
+    background: var(--color-secondary);
+  }
+  &::-webkit-slider-thumb {
+    background: var(--color-primary);
+    width: 1.5rem;
+    height: 1.5rem;
+    border: none;
+  }
+  &::-moz-range-track {
+    background: var(--color-secondary);
+  }
+  &::-moz-range-thumb {
+    background: var(--color-primary);
+    border: none;
+  }
+}
+
+// 7. Butoane
+.btn,
+button {
+  border-radius: $btn-border-radius;
+  border: $btn-border-width solid var(--color-border);
+  padding: $btn-padding-y $btn-padding-x;
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  transition: background var(--transition-time) ease, transform var(--transition-time) ease;
+
+  &:hover { background: var(--color-primary-hover); transform: translateY(-2px); }
+  &:active,
+  &:focus { background: var(--color-primary-darken-5); box-shadow: 0 0 0 0.2rem rgba($primary, 0.25); }
+}
+
+// 8. Input text & select
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select,
+.form-control {
+  border-radius: $input-border-radius;
+  border: $input-border-width solid var(--color-border);
+  padding: $input-padding-y $input-padding-x;
+  transition: border-color var(--transition-time) ease, box-shadow var(--transition-time) ease;
+
+  &:focus {
+    border-color: $input-focus-border-color;
+    box-shadow: $input-focus-box-shadow;
+    outline: none;
+  }
+}
+
+// 9. Stiluri globale pentru theme dark pe secțiuni și articole
+:root[data-theme="dark"] {
+  // Fundal general pentru secțiuni, articole, carduri, galerii etc.
+  --section-bg: #333;        // un gri închis
+  --section-color: #eee;     // text deschis
+
+  // Dacă ai deja --bs-body-bg / --bs-body-color, le poți suprascrie:
+  --bs-body-bg: var(--section-bg);
+  --bs-body-color: var(--section-color);
+}
+
+// Aplică fundal și culoare text pe secțiuni
+section,
+.container,
+.card,
+.table-container,
+.produse-list .card,
+.highlights,
+.recomandari,
+.tabel,
+.calendar,
+.informatii,
+.utilizatori_online,
+.statistici,
+.date_site {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+
+  // pentru link-uri din interior:
+  a, a:visited, a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  // dacă ai butoane în interior:
+  .btn, button {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+  }
+}
+
+// Asigură tranziție lină la schimbarea temei
+body {
+  transition: background-color var(--transition-time), color var(--transition-time);
+}
+
+
+// 10. Forţăm override pe elementele cu bg-white sau bg-light în tema dark
+:root[data-theme="dark"] {
+  // culoarea de fundal pe care o vrem pentru secţiuni
+  --override-bg: #3a3a3a;
+  // culoarea textului
+  --override-color: #eee;
+}
+
+:root[data-theme="dark"] {
+  // toate elementele care au explicit bg-white sau bg-light
+  .bg-white,
+  .bg-light {
+    background-color: var(--override-bg) !important;
+    color: var(--override-color) !important;
+  }
+
+  // dacă ai formularul de filtre care are .filtre.bg-white
+  section.filtre,
+  .filtre.bg-white {
+    background-color: var(--override-bg) !important;
+    color: var(--override-color) !important;
+
+    // suprascriem culoarea label-urilor şi a textelor din interior
+    label,
+    .form-label,
+    .form-check-label,
+    .btn,
+    button {
+      color: var(--override-color) !important;
+    }
+
+    // butoanele outline rămân vizibile
+    .btn-outline-primary {
+      border-color: var(--color-primary) !important;
+      color: var(--color-primary) !important;
+
+      &:hover {
+        background-color: var(--color-primary) !important;
+        color: var(--color-text-light) !important;
+      }
+    }
+  }
+
+  // Galerie statica sau dinamica
+  .galerie-dinamica,
+  .highlights,
+  .container-galerie,
+  .highlights .imagine-galerie,
+  .galerie-dinamica img {
+    background-color: var(--override-bg) !important;
+    color: var(--override-color) !important;
+  }
+
+  // Tabel (în <section class="tabel">)
+  .table-container,
+  .tabel table,
+  .tabel th,
+  .tabel td {
+    background-color: var(--override-bg) !important;
+    color: var(--override-color) !important;
+  }
+}

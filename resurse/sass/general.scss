@@ -1,20 +1,30 @@
-$color-primary: #CF291D;
-$color-secondary: #BFBFBF;
-$color-text-light: #ECECEC;
-$color-text-dark: #131313;
-$color-border: #1D1D1D;
-$color-visited: #A3002B;
-$nav-height: 60px;
-$submenu-width: 220px;
-$transition-time: 0.3s;
+:root {
+  // Light theme
+  --bs-primary: #CF291D;
+  --bs-secondary: #BFBFBF;
+  --bs-body-bg: #ECECEC;
+  --bs-body-color: #131313;
+  --color-border: #1D1D1D;
+  --color-visited: #A3002B;
 
-// Funcție alternativă pentru darken
+  --color-primary-rgb: 207, 41, 29;
+  --color-secondary-rgb: 191, 191, 191;
+  --color-text-light-rgb: 236, 236, 236;
+  --color-visited-rgb: 163, 0, 43;
+  --color-border-rgb: 29, 29, 29;
+  --color-primary-darken-5: #{darken(#CF291D, 5%)};
+  --color-primary-darken-8: #{darken(#CF291D, 8%)};
+  --color-primary-darken-10: #{darken(#CF291D, 10%)};
+  --color-primary-darken-15: #{darken(#CF291D, 15%)};
+}
+
+/* Mixin-uri și funcții - actualizate */
 @function darken-color($color, $amount) {
   @return mix(black, $color, $amount);
 }
 
 @mixin transition($property) {
-  transition: $property $transition-time ease;
+  transition: $property var(--transition-time) ease;
 }
 
 @mixin gradient-bar($position) {
@@ -24,314 +34,20 @@ $transition-time: 0.3s;
   #{$position}: 0;
   width: 3px;
   height: 0;
-  background: linear-gradient(to bottom, $color-text-light, $color-border);
+  background: linear-gradient(to bottom, var(--color-text-light), var(--color-border));
   @include transition(all);
 }
 
 body {
-   --color-primary: #{$color-primary};
-   --color-secondary: #{$color-secondary};
-   --color-text-light: #{$color-text-light};
-   --color-text-dark: #{$color-text-dark};
-   --color-border: #{$color-border};
-   --color-visited: #{$color-visited};
-   background-color: $color-text-light;
-   color: $color-text-dark;
+   background-color: var(--color-text-light);
+   color: var(--color-text-dark);
    font-family: Arial, sans-serif;
    font-size: 1rem;
    @include transition(font-size);
 }
 
-nav {
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    background-color: $color-primary;
-    z-index: 100;
-    
-    > li {
-      position: relative;
-      
-      > a {
-        display: flex;
-        align-items: center;
-        padding: 0 25px;
-        line-height: $nav-height;
-        color: $color-text-light;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 1rem;
-        @include transition(all);
-        
-        &:hover {
-          background-color: darken-color($color-primary, 10%);
-          font-size: 1.1rem;
-        }
-        
-        .fa-home {
-          display: none;
-          margin-right: 8px;
-        }
-      }
-      
-      ul {
-        position: absolute;
-        top: $nav-height;
-        left: 0;
-        width: $submenu-width;
-        background-color: darken-color($color-primary, 5%);
-        transform: scaleY(0);
-        transform-origin: top;
-        @include transition(transform);
-        box-shadow: 0 10px 15px rgba(0,0,0,0.2);
-        flex-direction: column;
-        
-        li {
-          a {
-            position: relative;
-            padding: 12px 25px;
-            display: block;
-            color: $color-text-light;
-            white-space: nowrap;
-            
-            &::before {
-              @include gradient-bar('left');
-            }
-            
-            &::after {
-              @include gradient-bar('right');
-            }
-            
-            &:hover {
-              background-color: darken-color($color-primary, 15%);
-              
-              &::before, &::after {
-                height: 100%;
-              }
-            }
-          }
-        }
-      }
-      
-      &:hover {
-        ul {
-          transform: scaleY(1);
-        }
-      }
-    }
-  }
-  
-  .menu-toggle {
-    display: none;
-    cursor: pointer;
-    padding: 15px;
-    color: $color-text-light;
-    font-size: 1.5rem;
-  }
-}
 
-@media (max-width: 1024px) {
-    nav {
-      ul {
-        display: flex;
-        align-items: center;
-        
-        > li {
-          > a {
-            display: inline-flex;
-            align-items: center;
-            height: $nav-height;
-            padding: 0 15px;
-            font-size: 0.9rem;
-            
-            &:first-child {
-              padding: 0 10px;
-              .fa-home {
-                display: inline-block;
-                font-size: 1.2rem;
-                margin-right: 0;
-              }
-              span {
-                display: none;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  @media (max-width: 768px) {
-    nav {
-      position: relative;
-      min-height: $nav-height;
-  
-      .menu-toggle {
-        display: block;
-        position: absolute;
-        right: 0;
-        top: 0;
-        padding: 15px;
-        color: $color-text-light;
-        font-size: 1.5rem;
-        z-index: 1001;
-      }
-  
-      > ul {
-        position: absolute;
-        top: $nav-height;
-        left: 0;
-        width: 100%;
-        background: $color-primary;
-        flex-direction: column;
-        transform: scaleY(0);
-        transform-origin: top;
-        transition: transform 0.3s ease;
-        pointer-events: none;
-        z-index: 1000;
-      }
-  
-      &:hover > ul,
-      &:focus-within > ul {
-        transform: scaleY(1);
-        pointer-events: auto;
-      }
-  
-      > ul > li {
-        width: 100%;
-  
-        > a {
-          padding: 15px;
-          display: flex;
-          align-items: center;
-          position: relative;
-  
-          .fa-home {
-            display: inline-block;
-            margin-right: 10px;
-          }
-        }
-  
-        > ul {
-          background: darken-color($color-primary, 8%);
-          transform: scaleY(0);
-          transform-origin: top;
-          transition: transform 0.3s ease;
-          height: 0;
-        }
-  
-        &:hover > ul,
-        &:focus-within > ul {
-          transform: scaleY(1);
-          height: auto;
-          display: block;
-        }
-  
-        &:hover,
-        &:focus-within {
-          margin-bottom: 150px; 
-        }
-      }
-    }
-  }
-  
 
-  @media print {
-    * {
-      background: transparent !important;
-      color: #000 !important;
-      box-shadow: none !important;
-      text-shadow: none !important;
-    }
-  
-    body::before {
-      content: "Acesta este un proiect școlar!";
-      display: block;
-      width: 80%;
-      margin: 2cm auto 1cm;
-      padding: 10px;
-      text-align: center;
-      border: 2px dotted #000;
-      font-weight: bold;
-      page-break-after: avoid;
-    }
-  
-    img, video, iframe, figure, picture, .container-iframe, 
-    .taburi-iframe, #link-top, .diamond, .tooltip {
-      display: none !important;
-    }
-  
-    main {
-      display: block !important;
-    }
-  
-    section {
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-  
-    a {
-      color: #000 !important;
-      text-decoration: none !important;
-    }
-  
-    h1 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 2.5rem !important;
-      text-decoration: underline;
-      page-break-after: always;
-      break-after: page;
-    }
-  
-    nav, .menu-toggle {
-      display: none !important;
-    }
-  
-    body::after {
-      content: "Mitrică Teodor";
-      position: fixed;
-      bottom: 1cm;
-      right: 1cm;
-      width: 100px;
-      height: 2cm;
-      border: 3px double #000;
-      opacity: 0.65;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-    }
-  
-    @page :left {
-      margin-left: 2.5cm;
-      margin-right: 0.5cm;
-    }
-  
-    @page :right {
-      margin-right: 2.5cm;
-      margin-left: 0.5cm;
-    }
-  
-    footer {
-      page-break-before: always;
-      break-before: page;
-    }
-  
-    table {
-      page-break-inside: auto;
-      break-inside: auto;
-    }
-  
-    tr {
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-  }
- 
 
 main {
   display: grid;
@@ -384,20 +100,20 @@ main {
 
 header { 
   grid-area: header;
-  background-color: $color-primary;
-  color: $color-text-light;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
   padding: 15px;
-  border-bottom: 3px solid $color-border;
+  border-bottom: 3px solid var(--color-border);
   border-radius: 10px 10px 0 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 footer {
   grid-area: footer;
-  background-color: rgba($color-secondary,85%);
-  color: $color-text-dark;
+  background-color: rgba(var(--color-secondary-rgb), 0.85);
+  color: var(--color-text-dark);
   padding: 15px;
-  border-top: 3px solid $color-border;
+  border-top: 3px solid var(--color-border);
   border-radius: 0 0 10px 10px;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -415,20 +131,20 @@ footer {
 .adauga_anunt { grid-area: zona10; }
 
 a {
-  color: $color-primary;
+  color: var(--color-primary);
   text-decoration: none;
   &:hover {
     text-decoration: underline;
   }
   &:visited {
-    color: $color-visited;
+    color: var(--color-visited);
   }
 }
 
 section {
-  background-color: rgba($color-text-light,85%);
+  background-color: rgba(var(--color-text-light-rgb), 0.85);
   padding: 15px;
-  border: 2px solid $color-border;
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
@@ -478,8 +194,8 @@ h2 {
     a {
       display: inline-block;
       padding: 10px 20px;
-      background-color: $color-secondary;
-      color: $color-text-light;
+      background-color: var(--color-secondary);
+      color: var(--color-text-light);
       border-radius: 5px;
       font-weight: bold;
       @include transition(background-color);
@@ -499,10 +215,10 @@ h2 {
   &:hover {
     opacity: 1;
     .diamond {
-      background-color: $color-border;
+      background-color: var(--color-border);
     }
     .triangle {
-      border-bottom-color: $color-primary;
+      border-bottom-color: var(--color-primary);
     }
     .tooltip {
       visibility: visible;
@@ -513,7 +229,7 @@ h2 {
     width: 50px;
     height: 50px;
     background-color: transparent;
-    border: 3px solid $color-border;
+    border: 3px solid var(--color-border);
     transform: rotate(45deg);
     display: flex;
     justify-content: center;
@@ -525,7 +241,7 @@ h2 {
     height: 0;
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-bottom: 20px solid $color-border;
+    border-bottom: 20px solid var(--color-border);
     transform: rotate(-45deg);
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -533,8 +249,8 @@ h2 {
   }
   .tooltip {
     margin-top: 5px;
-    background-color: $color-border;
-    color: $color-text-light;
+    background-color: var(--color-border);
+    color: var(--color-text-light);
     padding: 5px 10px;
     font-size: 12px;
     border-radius: 5px;
@@ -560,71 +276,68 @@ h2 {
       font-style: italic;
       padding: 10px;
       font-size: 14px;
-      color: $color-secondary;
+      color: var(--color-secondary);
     }
     thead th {
-      border: 3px solid $color-border;
+      border: 3px solid var(--color-border);
       font-weight: bold;
       padding: 10px;
       text-transform: uppercase;
-      background-color: $color-primary;
-      color: $color-text-light;
+      background-color: var(--color-primary);
+      color: var(--color-text-light);
     }
     tbody {
       td {
-        border: 1px solid $color-border;
+        border: 1px solid var(--color-border);
         padding: 10px;
       }
       tr:nth-child(odd) {
-        box-shadow: 0 4px 10px rgba($color-primary, 0.2);
-        color: $color-primary;
+        box-shadow: 0 4px 10px rgba(var(--color-primary-rgb), 0.2);
+        color: var(--color-primary);
       }
       tr:nth-child(even) {
-        box-shadow: 0 4px 10px rgba($color-secondary, 0.2);
-        color: $color-border;
+        box-shadow: 0 4px 10px rgba(var(--color-secondary-rgb), 0.2);
+        color: var(--color-border);
       }
       tr:hover {
-        background-color: rgba($color-primary, 0.1);
+        background-color: rgba(var(--color-primary-rgb), 0.1);
         font-size: 1.2em;
         @include transition(all);
       }
     }
     tfoot td {
-      border: 1px solid $color-border;
+      border: 1px solid var(--color-border);
       padding: 10px;
     }
   }
 }
-
 math {
   font-family: "Arial", sans-serif;
   font-size: 1.2em;
-  color: $color-text-dark;
+  color: var(--color-text-dark);
   mi {
     font-style: italic;
     font-weight: bold;
-    color: $color-primary;
+    color: var(--color-primary);
   }
   mo {
-    color: $color-border;
+    color: var(--color-border);
     font-weight: bold;
     &:first-of-type, &:last-of-type {
-      color: $color-visited;
+      color: var(--color-visited);
       font-size: 1.3em;
     }
   }
   mfrac {
-    color: $color-secondary;
+    color: var(--color-secondary);
     font-weight: bold;
     font-size: 1.1em;
   }
 }
 
-
 a:visited {
-  color: $color-visited;
+  color: var(--color-visited);
 }
-
 
 a[href^="http"] {
   position: relative;
@@ -636,12 +349,12 @@ a[href^="http"] {
       left: 0;
       font-size: 1.5em; 
       line-height: 0.75; 
-      color: $color-primary;
+      color: var(--color-primary);
       @include transition(color);
   }
   
   &:hover::before {
-      color: darken-color($color-primary, 15%);
+      color: var(--color-primary-darken-15);
   }
 }
 
@@ -649,12 +362,12 @@ main a {
   position: relative;
   display: inline-block;
   padding: 2px 4px;
-  transition: all $transition-time ease;
+  transition: all var(--transition-time) ease;
   
   background-image: radial-gradient(
       circle at center,
-      rgba($color-primary, 0.3) 0%,
-      rgba($color-primary, 0.3) 40%,
+      rgba(var(--color-primary-rgb), 0.3) 0%,
+      rgba(var(--color-primary-rgb), 0.3) 40%,
       transparent 80%,
       transparent 100%
   );
@@ -668,10 +381,10 @@ main a {
 }
 
 a:active {
-  border: 2px solid $color-primary;
+  border: 2px solid var(--color-primary);
   border-radius: 3px;
   padding: 0 2px;
-  box-shadow: 0 0 3px rgba($color-primary, 0.5);
+  box-shadow: 0 0 3px rgba(var(--color-primary-rgb), 0.5);
 }
 
 nav a {
@@ -684,7 +397,7 @@ nav a {
 
 nav {
   a:visited {
-      color: $color-text-light !important;
+      color: var(--color-text-light) !important;
   }
   
   a[href^="http"]::before {
@@ -714,7 +427,7 @@ nav {
           text-align: center;
           margin-top: 10px;
           font-style: italic;
-          color: $color-border;
+          color: var(--color-border);
           font-size: 0.9em;
           width: 100%;
       }
@@ -832,31 +545,6 @@ figure {
         color: #b30000;
         font-size: 14px;
       }
-
-      &:nth-of-type(1)::before {
-        content: "Loc";
-      }
-
-      &:nth-of-type(2)::before {
-        content: "Produs";
-      }
-
-      &:nth-of-type(3)::before {
-        content: "Categorie";
-      }
-
-      &:nth-of-type(4)::before {
-        content: "Vânzări (buc)";
-      }
-    }
-
-    //ignora randul de total
-    tr:last-of-type td {
-      padding-left: 1rem;
-
-      &::before {
-        content: none;
-      }
     }
   }
 }
@@ -868,7 +556,7 @@ figure {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    z-index: -1; // Pune videoclipul în spatele conținutului
+    z-index: -1;
 
     video {
         object-fit: cover;
@@ -879,7 +567,9 @@ figure {
     }
 }
 
-$animation-duration: 10s;
+:root {
+  --animation-duration: 10s;
+}
 
 @keyframes backgroundFade {
   0%, 100% {
@@ -909,7 +599,7 @@ $animation-duration: 10s;
     background-position: center;
     background-attachment: fixed;
     opacity: 0;
-    animation: backgroundFade $animation-duration * 2 infinite;
+    animation: backgroundFade calc(var(--animation-duration) * 2) infinite;
 
     &.slide-1 {
       background-image: url('/resurse/imagini/bg1.jpg');
@@ -917,14 +607,13 @@ $animation-duration: 10s;
 
     &.slide-2 {
       background-image: url('/resurse/imagini/bg2.jpg');
-      animation-delay: $animation-duration;
+      animation-delay: var(--animation-duration);
     }
   }
 }
 
-//stilizare hr
 .lista-anunturi {
-    background: rgba($color-text-light, 0.9);
+    background: rgba(var(--color-text-light-rgb), 0.9);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -933,13 +622,13 @@ $animation-duration: 10s;
 .anunt-item {
     padding: 15px;
     font-size: 1.1em;
-    color: $color-text-dark;
+    color: var(--color-text-dark);
 }
 
 .efect-css-stilizare-hr {
   height: 10px;
   border: none;
-  position: relative; //ca sa se pozitioneze gradientele fata de el nu de pagina
+  position: relative;
   
   &::before,
   &::after {
@@ -947,27 +636,24 @@ $animation-duration: 10s;
     position: absolute;
     left: 0;
     right: 0;
-    height: 5px;//inaltimea liniilor
+    height: 5px;
     background-repeat: repeat;
   }
 
-  // Primul gradient (sus)
   &::before {
-    top: 1px; // sus
-    background-image: repeating-linear-gradient(to right,$color-primary 0 4px,transparent 0 10px);
+    top: 1px;
+    background-image: repeating-linear-gradient(to right, var(--color-primary) 0 4px, transparent 0 10px);
     background-size: 12px 100%;
   }
 
-  // Al doilea gradient (jos)
   &::after {
-    bottom: 1px; //jos
-    background-image: repeating-linear-gradient(to right, $color-primary 0 4px,transparent 0 10px);
+    bottom: 1px;
+    background-image: repeating-linear-gradient(to right, var(--color-primary) 0 4px, transparent 0 10px);
     background-size: 12px 100%;
-    background-position: 6px 0;//se muta cu un patrat la dreapta
+    background-position: 6px 0;
   }
 }
-
-//cerinta duotone
+// Cerinta duotone
 .efect-css-duotone {
   position: relative;
   width: 100%;
@@ -978,17 +664,17 @@ $animation-duration: 10s;
     .duotone-image::before {
       background: linear-gradient(
         to bottom,
-        $color-secondary 0%,
-        rgba($color-secondary, 0.8) 90%,
-        rgba($color-secondary, 0) 100%
+        var(--color-secondary) 0%,
+        rgba(var(--color-secondary-rgb), 0.8) 90%,
+        rgba(var(--color-secondary-rgb), 0) 100%
       );
     }
     .duotone-image::after {
       background: linear-gradient(
         to bottom,
-        rgba($color-visited, 0) 0%,
-        rgba($color-visited, 0.8) 10%,
-        $color-visited 100%
+        rgba(var(--color-visited-rgb), 0) 0%,
+        rgba(var(--color-visited-rgb), 0.8) 10%,
+        var(--color-visited) 100%
       );
     }
   }
@@ -1007,7 +693,7 @@ $animation-duration: 10s;
     left: 0;
     right: 0;
     mix-blend-mode: multiply;
-    transition: all 3s cubic-bezier(0.4, 0, 0.2, 1);//tranzitia nu merge??
+    transition: all 3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
   }
 
@@ -1016,9 +702,9 @@ $animation-duration: 10s;
     bottom: 55%;
     background: linear-gradient(
       to bottom,
-      $color-primary 0%,
-      rgba($color-primary, 0.8) 90%,
-      rgba($color-primary, 0) 100%
+      var(--color-primary) 0%,
+      rgba(var(--color-primary-rgb), 0.8) 90%,
+      rgba(var(--color-primary-rgb), 0) 100%
     );
     mix-blend-mode: screen;
     z-index: 1;
@@ -1030,9 +716,9 @@ $animation-duration: 10s;
     bottom: 0;
     background: linear-gradient(
       to bottom,
-      rgba($color-border, 0) 0%,
-      rgba($color-border, 0.8) 10%,
-      $color-border 100%
+      rgba(var(--color-border-rgb), 0) 0%,
+      rgba(var(--color-border-rgb), 0.8) 10%,
+      var(--color-border) 100%
     );
     mix-blend-mode: multiply;
     z-index: 2;
@@ -1202,7 +888,7 @@ $animation-duration: 10s;
     gap: 2rem;
     margin-bottom: 3rem;
     padding: 1rem;
-    border: 1px solid $color-text-light;
+    border: 1px solid var(--color-text-light);
     border-radius: 8px;
 }
 
@@ -1220,7 +906,7 @@ $animation-duration: 10s;
 
 .caracteristici td {
     padding: 0.5rem;
-    border-bottom: 1px solid $color-text-light;
+    border-bottom: 1px solid var(--color-text-light);
 }
 
 .caracteristici tr:last-child td {
@@ -1234,7 +920,7 @@ $animation-duration: 10s;
 #filtru-text {
     padding: 0.8rem;
     width: 300px;
-    border: 1px solid $color-text-light;
+    border: 1px solid var(--color-text-light);
     border-radius: 4px;
 }
 
@@ -1242,17 +928,16 @@ $animation-duration: 10s;
     display: inline-block;
     margin-top: 1rem;
     padding: 0.8rem 1.5rem;
-    background: $color-secondary;
-    color: $color-text-light;
+    background: var(--color-secondary);
+    color: var(--color-text-light);
     text-decoration: none;
     border-radius: 4px;
     transition: background 0.3s;
 }
 
 .btn-detalii:hover {
-    background: $color-visited;
+    background: var(--color-visited);
 }
-
 
 .produse-container {
     padding: 2rem;
@@ -1261,11 +946,11 @@ $animation-duration: 10s;
 }
 
 .filtre {
-    background: $color-text-light;
+    background: var(--color-text-light);
     padding: 1.5rem;
     border-radius: 8px;
     margin-bottom: 2rem;
-    box-shadow: 0 2px 4px rgba($color-border, 0.1);
+    box-shadow: 0 2px 4px rgba(var(--color-border-rgb), 0.1);
 
     .filtru-grup {
         margin-bottom: 1.5rem;
@@ -1274,66 +959,37 @@ $animation-duration: 10s;
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: $color-text-dark;
+            color: var(--color-text-dark);
         }
 
         input[type="text"] {
             width: 100%;
             padding: 0.5rem;
-            border: 1px solid $color-border;
+            border: 1px solid var(--color-border);
             border-radius: 4px;
             background: white;
-            color: $color-text-dark;
+            color: var(--color-text-dark);
         }
 
         .range-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-
-            input[type="range"] {
-                width: 100%;
-            }
-
             .range-labels {
-                display: flex;
-                justify-content: space-between;
-                font-size: 0.9rem;
-                color: $color-secondary;
+                color: var(--color-secondary);
             }
         }
 
         .radio-grup {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-
             label {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                font-weight: normal;
-                color: $color-text-dark;
+                color: var(--color-text-dark);
             }
         }
     }
 
     .butoane-filtre {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-
         button {
-            padding: 0.5rem 1rem;
-            background: $color-primary;
-            color: $color-text-light;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-
+            background: var(--color-primary);
+            color: var(--color-text-light);
             &:hover {
-                background: darken($color-primary, 10%);
+                background: var(--color-primary-hover);
             }
         }
     }
@@ -1347,91 +1003,47 @@ $animation-duration: 10s;
     .produs {
         background: white;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba($color-border, 0.1);
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-
+        box-shadow: 0 2px 4px rgba(var(--color-border-rgb), 0.1);
         &:hover, &:focus-within {
-            box-shadow: 0 4px 8px rgba($color-border, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .imagine-produs {
-            flex: none;
-            width: 100%;
-
-            img {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-                border-radius: 4px;
-            }
+            box-shadow: 0 4px 8px rgba(var(--color-border-rgb), 0.15);
         }
 
         .informatii-produs {
-            flex: 1;
-
             h2 {
-                margin-top: 0;
-                color: $color-text-dark;
+                color: var(--color-text-dark);
             }
 
             .categorie {
-                color: $color-secondary;
-                font-style: italic;
+                color: var(--color-secondary);
             }
 
             .descriere {
-                color: $color-text-dark;
-                line-height: 1.6;
+                color: var(--color-text-dark);
             }
 
             .caracteristici {
-                width: 100%;
-                margin-top: 1rem;
-                border-collapse: collapse;
-
                 td {
-                    padding: 0.5rem;
-                    border: 1px solid $color-border;
-
+                    border: 1px solid var(--color-border);
                     &:first-child {
-                        font-weight: 600;
-                        background: $color-text-light;
-                        color: $color-text-dark;
+                        background: var(--color-text-light);
+                        color: var(--color-text-dark);
                     }
                 }
             }
 
             .btn-detalii {
-                display: inline-block;
-                margin-top: 1rem;
-                padding: 0.5rem 1rem;
-                background: $color-primary;
-                color: $color-text-light;
-                text-decoration: none;
-                border-radius: 4px;
-                transition: background 0.3s;
-
+                background: var(--color-primary);
+                color: var(--color-text-light);
                 &:hover {
-                    background: darken($color-primary, 10%);
+                    background: var(--color-primary-hover);
                 }
             }
         }
     }
 }
 
-// Responsive design
 @media (max-width: 768px) {
     .produse-list .produs {
         flex-direction: column;
-
-        .imagine-produs {
-            flex: none;
-            width: 100%;
-        }
     }
 }
