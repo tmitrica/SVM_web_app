@@ -453,3 +453,9 @@ body {
     color: var(--override-color) !important;
   }
 }
+
+.active-page {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    font-weight: bold;
+}
