@@ -272,12 +272,22 @@ app.get('/produse', async (req, res) => {
         const { rows: produse } = await pool.query(query, params);
 
         const preturi = produse.map(p => p.pret);
+        
+        // Calculăm cel mai ieftin produs pentru fiecare categorie
+        const cheapestByCategory = {};
+        produse.forEach(prod => {
+            const categ = prod.categorie_mare;
+            if (!cheapestByCategory[categ] || prod.pret < cheapestByCategory[categ].pret) {
+                cheapestByCategory[categ] = prod;
+            }
+        });
 
         res.render('pagini/produse', {
             produse,
             categorii: res.locals.categorii,
             minPret: preturi.length ? Math.min(...preturi) : 0,
-            maxPret: preturi.length ? Math.max(...preturi) : 0
+            maxPret: preturi.length ? Math.max(...preturi) : 0,
+            cheapestByCategory // Adăugăm acest obiect în datele pentru template
         });
 
     } catch (err) {
@@ -286,42 +296,90 @@ app.get('/produse', async (req, res) => {
 });
 
 
-app.get('/vanzari_masini', async (req, res) => {
+app.get('/seturi', async (req, res) => {
     try {
-        let query = 'SELECT * FROM produse';
-        const { sortare, categorie } = req.query;
-        const params = [];
+        // Interogare pentru toate seturile
+        const seturiQuery = await pool.query(`
+            SELECT s.*, COUNT(a.id_produs) AS numar_produse
+            FROM seturi s
+            LEFT JOIN asociere_set a ON s.id = a.id_set
+            GROUP BY s.id
+        `);
         
-        // Filtrare
-        if (categorie) {
-            query += ' WHERE categorie_mare = $1';
-            params.push(categorie);
+        // Interogare pentru produsele din fiecare set
+        for (let set of seturiQuery.rows) {
+            const produseQuery = await pool.query(`
+                SELECT p.*
+                FROM produse p
+                JOIN asociere_set a ON p.id = a.id_produs
+                WHERE a.id_set = $1
+            `, [set.id]);
+            
+            set.produse = produseQuery.rows;
+            
+           // Calculează prețul setului cu reducere
+            const pretTotal = set.produse.reduce((sum, prod) => sum + parseFloat(prod.pret), 0);
+            const discountPercent = Math.min(5, set.numar_produse) * 5;
+            const pretCuDiscount = pretTotal * (1 - discountPercent / 100);
+
+            // Folosim obiecte pentru a păstra atât valoarea numerică cât și versiunea formatată
+            set.pret = {
+            faraDiscount: pretTotal,
+            cuDiscount: pretCuDiscount,
+            faraDiscountFormatat: pretTotal.toFixed(2),
+            cuDiscountFormatat: pretCuDiscount.toFixed(2)
+            };
+            set.discountPercent = discountPercent;
         }
 
-        // Sortare
-        if (sortare === 'pret-asc') {
-            query += ' ORDER BY pret ASC';
-        } else if (sortare === 'pret-desc') {
-            query += ' ORDER BY pret DESC';
-        } else if (sortare === 'km-asc') {
-            query += ' ORDER BY kilometraj ASC';
-        }
-
-        const { rows } = await pool.query(query, params);
-        res.render('pagini/vanzari_masini', { 
-            produse: rows,
-            queryParams: req.query
-        });
+        res.render('pagini/seturi', { seturi: seturiQuery.rows });
     } catch (err) {
+        console.error(err);
         afisareEroare(res, 500);
     }
 });
 
+// Actualizează ruta pentru produs individual
 app.get('/produs/:id', async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT * FROM produse WHERE id = $1', [req.params.id]);
         if (!rows.length) return afisareEroare(res, 404);
-        res.render('pagini/produs', { produs: rows[0] });
+        
+        // Interogare pentru seturile care conțin acest produs
+        const seturiQuery = await pool.query(`
+            SELECT s.*, COUNT(a.id_produs) AS numar_produse
+            FROM seturi s
+            JOIN asociere_set a ON s.id = a.id_set
+            WHERE a.id_produs = $1
+            GROUP BY s.id
+        `, [req.params.id]);
+        
+        // Calculează prețurile cu reducere pentru fiecare set
+        for (let set of seturiQuery.rows) {
+            const produseQuery = await pool.query(`
+                SELECT p.*
+                FROM produse p
+                JOIN asociere_set a ON p.id = a.id_produs
+                WHERE a.id_set = $1
+            `, [set.id]);
+            
+            const pretTotal = produseQuery.rows.reduce((sum, prod) => sum + parseFloat(prod.pret), 0);
+            const discountPercent = Math.min(5, produseQuery.rows.length) * 5;
+            const pretCuDiscount = pretTotal * (1 - discountPercent / 100);
+
+            set.pret = {
+            faraDiscount: pretTotal,
+            cuDiscount: pretCuDiscount,
+            faraDiscountFormatat: pretTotal.toFixed(2),
+            cuDiscountFormatat: pretCuDiscount.toFixed(2)
+            };
+            set.produse = produseQuery.rows;
+        }
+
+        res.render('pagini/produs', { 
+            produs: rows[0],
+            seturi: seturiQuery.rows
+        });
     } catch (err) {
         afisareEroare(res, 500);
     }
@@ -393,6 +451,64 @@ fs.watch(obGlobal.folderScss, (event, filename) => {
     }
 });
 
+// Set backup cleanup interval
+const backupDir = path.join(__dirname, "backup");
+const T = 60; // Time in minutes after which files are considered old (1 hour)
+
+// Recursive function to delete old files
+async function cleanupOldBackups() {
+    try {
+        if (!fs.existsSync(backupDir)) {
+            console.log("Folderul backup nu există. Omitere curățare.");
+            return;
+        }
+
+        const now = Date.now();
+        const threshold = T * 60 * 1000; // Convert minutes to milliseconds
+        let deletedCount = 0;
+
+        // Recursive file processing
+        async function processDirectory(directory) {
+            const files = await fs.promises.readdir(directory, { withFileTypes: true });
+            
+            for (const dirent of files) {
+                const fullPath = path.join(directory, dirent.name);
+                
+                if (dirent.isDirectory()) {
+                    await processDirectory(fullPath);
+                } else if (dirent.isFile()) {
+                    const stats = await fs.promises.stat(fullPath);
+                    const fileAge = now - stats.mtimeMs;
+                    
+                    if (fileAge > threshold) {
+                        await fs.promises.unlink(fullPath);
+                        console.log(`Șters fișierul vechi de backup: ${fullPath}`);
+                        deletedCount++;
+                    }
+                }
+            }
+            
+            // Remove empty directories
+            const remaining = await fs.promises.readdir(directory);
+            if (remaining.length === 0) {
+                await fs.promises.rmdir(directory);
+                console.log(`Șters folderul gol: ${directory}`);
+            }
+        }
+
+        await processDirectory(backupDir);
+        
+        if (deletedCount > 0) {
+            console.log(`Șterse ${deletedCount} fișiere vechi din backup`);
+        }
+    } catch (err) {
+        console.error("Eroare la curățarea backup-ului:", err);
+    }
+}
+
+// Run cleanup at startup and set interval
+cleanupOldBackups();
+setInterval(cleanupOldBackups, 30 * 60 * 1000); // Run every 30 minutes
 
 console.log("Calea folderului (__dirname):", __dirname);
 console.log("Calea fișierului (__filename):", __filename);

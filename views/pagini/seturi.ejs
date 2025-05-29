@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ro">
+<%- include("../fragmente/head") %>
+<body class="bg-light">
+  <%- include("../fragmente/header", {categorii}) %>
+
+  <div class="container mt-5">
+    <div class="text-center mb-5">
+      <h1 class="display-4 fw-bold text-primary">Seturi de Mașini</h1>
+      <p class="lead">Economisește până la 25% cu pachetele noastre speciale</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+      <% seturi.forEach(set => { %>
+        <div class="col">
+          <div class="card h-100 shadow-lg border-primary">
+            <div class="card-header bg-primary text-white">
+              <h2 class="h4 mb-0"><%= set.nume_set %></h2>
+            </div>
+            <div class="card-body">
+              <p class="card-text"><%= set.descriere_set %></p>
+              
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-info fs-6">
+                    <%= set.numar_produse %> produse
+                </span>
+                <div class="text-end">
+                    <span class="text-muted text-decoration-line-through me-2">
+                    <%= set.pret.faraDiscountFormatat %> €
+                    </span>
+                    <span class="fs-4 fw-bold text-danger">
+                    <%= set.pret.cuDiscountFormatat %> €
+                    </span>
+                    <div class="text-success">
+                    <i class="bi bi-arrow-down"></i> Economisire <%= set.discountPercent %>%
+                    </div>
+                </div>
+                </div>
+              
+              <h3 class="h5 mt-4">Produse incluse:</h3>
+              <div class="row row-cols-2 row-cols-md-3 g-3">
+                <% set.produse.forEach(produs => { %>
+                  <div class="col">
+                    <a href="/produs/<%= produs.id %>" class="text-decoration-none">
+                      <div class="card h-100 border-0 shadow-sm">
+                        <img src="../../resurse/imagini/<%= produs.imagine %>" 
+                             class="card-img-top" 
+                             alt="<%= produs.nume %>"
+                             style="height: 100px; object-fit: cover;">
+                        <div class="card-body p-2 text-center">
+                          <div class="card-title fs-6 mb-0"><%= produs.nume %></div>
+                          <div class="text-primary fw-bold"><%= produs.pret %> €</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+
+  <%- include("../fragmente/footer") %>
+</body>
+</html>

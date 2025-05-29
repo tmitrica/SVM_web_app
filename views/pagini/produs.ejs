@@ -22,6 +22,54 @@
      
     </main>
 
+    <!-- În views/pagini/produs.ejs -->
+<% if (seturi && seturi.length) { %>
+  <section class="mt-5 pt-4 border-top">
+    <h2 class="h3 mb-4">Acest produs face parte din următoarele seturi:</h2>
+    
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <% seturi.forEach(set => { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm border-primary">
+            <div class="card-header bg-primary text-white py-2">
+              <h3 class="h5 mb-0"><%= set.nume_set %></h3>
+            </div>
+            <div class="card-body">
+              <p class="card-text"><%= set.descriere_set %></p>
+              
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-info">
+                    <%= set.produse.length %> produse
+                </span>
+                <div>
+                    <span class="text-muted text-decoration-line-through me-2">
+                    <%= set.pret.faraDiscountFormatat %> €
+                    </span>
+                    <span class="fs-5 fw-bold text-danger">
+                    <%= set.pret.cuDiscountFormatat %> €
+                    </span>
+                </div>
+                </div>
+              
+              <div class="d-flex flex-wrap gap-2">
+                <% set.produse.forEach(prod => { %>
+                  <a href="/produs/<%= prod.id %>" 
+                     class="text-decoration-none d-flex align-items-center <%= prod.id === produs.id ? 'bg-warning rounded p-1' : '' %>">
+                    <img src="../../resurse/imagini/<%= prod.imagine %>" 
+                         width="40" height="40"
+                         class="rounded me-2 object-fit-cover"
+                         alt="<%= prod.nume %>">
+                    <span><%= prod.nume %></span>
+                  </a>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+<% } %>
 
     <%- include("../fragmente/footer") %>
 </body>

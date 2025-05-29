@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ro">
 <%- include("../fragmente/head") %>
-<!-- bonusuri etapa 6: 1 4 5 11 17 -->
+<!-- bonusuri etapa 6: 1 4 5 11 13 14 17 -->
 <body class="bg-light">
   <%- include("../fragmente/header", {categorii}) %>
 
@@ -92,31 +92,29 @@
           <!-- Comentariu: select simplu pentru categorie -->
         </div>
 
-        <!-- 8. Select multiplu (kilometraj) -->
-        <div class="col-12 col-md-6 col-lg-4">
-          <label for="filtru-km" class="form-label">Kilometraj (alege interval)</label>
-          <select id="filtru-km" class="form-select" multiple> <!-- select multiple -->
-            <%
-              // Generare intervale kilometraj dinamice
-              const kilometre = produse.map(p => p.kilometraj);
-              const kmMax = Math.max(...kilometre);
-              const step = 50000; // Pas de 50.000 km
-              let current = 0;
-              
-              while(current < kmMax) {
-                const next = current + step;
-                const upper = next > kmMax ? kmMax : next;
-            %>
-                <option value="<%= current %>-<%= upper %>">
-                  <%= current.toLocaleString() %>‑<%= upper.toLocaleString() %> km
-                </option>
-            <%
-                current = upper + 1;
-              }
-            %>
-          </select>
-          <!-- Comentariu: select multipl pentru intervale de kilometraj -->
-        </div>
+       <!-- 8. Select multiplu (kilometraj) -->
+        <%
+          // Generare intervale kilometraj dinamice
+          const kilometre = produse.map(p => p.kilometraj);
+          const kmMax = Math.max(...kilometre);
+          const step = 50000;
+          const intervals = [];
+          
+          for (let current = 0; current < kmMax; ) {
+            const next = current + step;
+            const upper = next > kmMax ? kmMax : next;
+            intervals.push({start: current, end: upper});
+            current = upper + 1;
+          }
+        %>
+
+        <select id="filtru-km" class="form-select" multiple>
+          <% intervals.forEach(interval => { %>
+            <option value="<%= interval.start %>-<%= interval.end %>">
+              <%= interval.start.toLocaleString() %>‑<%= interval.end.toLocaleString() %> km
+            </option>
+          <% }); %>
+        </select>
       </div>
 
       <!-- Butoane actiuni -->
@@ -131,54 +129,80 @@
 
     <!-- ►►► Lista Produse ◄◄◄ -->
     <section class="produse-list row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-      <% produse.forEach(produs => { %>
-        <div class="col">
-          <article class="produs card h-100 shadow-sm"
-                   data-categorie="<%= produs.categorie_mare %>"
-                   data-culoare="<%= produs.culoare %>"
-                   data-pret="<%= produs.pret %>"
-                   data-kilometraj="<%= produs.kilometraj %>"
-                   data-garantie="<%= produs.garantie_extensibila %>"
-                   data-nume="<%= produs.nume.toLowerCase() %>"
-                   data-categorie-secundara="<%= produs.categorie_secundara.toLowerCase() %>">
-            <div class="card-body d-flex flex-column">
-              <div class="row g-3">
-                <div class="col-md-5">
-                  <img src="../../resurse/imagini/<%= produs.imagine %>" 
-                       class="img-fluid rounded-3" 
-                       alt="<%= produs.nume %>"
-                       style="height: 200px; object-fit: cover;">
-                </div>
-                <div class="col-md-7">
-                  <h2 class="card-title fs-5 fw-bold mb-3"><%= produs.nume %></h2>
-                  <span class="badge bg-secondary mb-2"><%= produs.categorie_mare %></span>
-                  <table class="table table-sm mb-3">
-                    <tbody>
-                      <tr><td class="fw-medium">Preț</td>      <td class="text-end"><%= produs.pret %> €</td></tr>
-                      <tr><td class="fw-medium">Kilometraj</td><td class="text-end"><%= produs.kilometraj %> km</td></tr>
-                      <tr><td class="fw-medium">Motor</td>     <td class="text-end"><%= produs.categorie_secundara %></td></tr>
-                      <tr><td class="fw-medium">Culoare</td>   <td class="text-end"><%= produs.culoare %></td></tr>
-                      <tr><td class="fw-medium">Adăugat</td>   <td class="text-end"><%= formatDate(produs.data_adaugare) %></td></tr>
-                      <tr><td class="fw-medium">Garanție</td>  <td class="text-end"><%= produs.garanție_extensibilă ? 'Da' : 'Nu' %></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="mt-auto">
-                <p class="card-text"><%= produs.descriere %></p>
-                <a href="/produs/<%= produs.id %>" class="btn btn-primary w-100">
-                  <i class="bi bi-info-circle me-2"></i>Detalii complete
-                </a>
-              </div>
+  <% produse.forEach(produs => { %>
+    <div class="col">
+      <article class="produs card h-100 shadow-sm position-relative"
+               data-categorie="<%= produs.categorie_mare %>"
+               data-culoare="<%= produs.culoare %>"
+               data-pret="<%= produs.pret %>"
+               data-kilometraj="<%= produs.kilometraj %>"
+               data-garantie="<%= produs.garantie_extensibila %>"
+               data-nume="<%= produs.nume.toLowerCase() %>"
+               data-categorie-secundara="<%= produs.categorie_secundara.toLowerCase() %>">
+      
+        <!-- Adăugăm banner pentru cel mai ieftin produs în categorie -->
+        <!-- Adăugăm banner pentru cel mai ieftin produs în categorie -->
+        <% if (typeof cheapestByCategory !== 'undefined' && cheapestByCategory[produs.categorie_mare] && cheapestByCategory[produs.categorie_mare].id === produs.id) { %>
+          <div class="position-absolute top-0 start-0 w-100 text-center p-2 bg-warning text-dark fw-bold" style="z-index: 10;">
+            <i class="bi bi-tag-fill me-1"></i> Cel mai ieftin în <%= produs.categorie_mare %>
+          </div>
+        <% } %>
+        
+        <div class="card-body d-flex flex-column">
+          <div class="row g-3">
+            <div class="col-md-5">
+              <img src="../../resurse/imagini/<%= produs.imagine %>" 
+                   class="img-fluid rounded-3" 
+                   alt="<%= produs.nume %>"
+                   style="height: 200px; object-fit: cover;">
             </div>
-          </article>
+            <div class="col-md-7">
+              <h2 class="card-title fs-5 fw-bold mb-3"><%= produs.nume %></h2>
+              <span class="badge bg-secondary mb-2"><%= produs.categorie_mare %></span>
+              <table class="table table-sm mb-3">
+                <tbody>
+                  <tr><td class="fw-medium">Preț</td>      <td class="text-end"><%= produs.pret %> €</td></tr>
+                  <tr><td class="fw-medium">Kilometraj</td><td class="text-end"><%= produs.kilometraj %> km</td></tr>
+                  <tr><td class="fw-medium">Motor</td>     <td class="text-end"><%= produs.categorie_secundara %></td></tr>
+                  <tr><td class="fw-medium">Culoare</td>   <td class="text-end"><%= produs.culoare %></td></tr>
+                  <tr><td class="fw-medium">Adăugat</td>   <td class="text-end"><%= formatDate(produs.data_adaugare) %></td></tr>
+                  <tr><td class="fw-medium">Garanție</td>  <td class="text-end"><%= produs.garanție_extensibilă ? 'Da' : 'Nu' %></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <p class="card-text"><%= produs.descriere %></p>
+            <a href="/produs/<%= produs.id %>" class="btn btn-primary w-100">
+              <i class="bi bi-info-circle me-2"></i>Detalii complete
+            </a>
+          </div>
         </div>
-      <% }) %>
-    </section>
+      </article>
+    </div>
+  <% }) %>
+</section>
+  </div>
+
+    <!-- Modal pentru detalii produs -->
+  <div class="modal fade" id="modalProdus" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-light">
+          <h5 class="modal-title" id="modalTitlu"></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Închide</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <%- include("../fragmente/footer") %>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <!-- ►►► SCRIPT: filtre, sortare, reset, calcul ◄◄◄ -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -294,39 +318,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Reafișează produsele pe pagina curentă și construiește butoanele de paginare
     function refreshPagination() {
-        // Golește containerul
-        container.innerHTML = '';
-        // Calculează indexurile de start și end
-        const startIdx = (currentPage - 1) * K;
-        const endIdx   = startIdx + K;
-        
-        // Afișează doar sub-array-ul relevant
-        filteredProducts.slice(startIdx, endIdx).forEach(col => {
-            container.appendChild(col.cloneNode(true));
-        });
+    // Golește containerul
+    container.innerHTML = '';
+    // Calculează indexurile de start și end
+    const startIdx = (currentPage - 1) * K;
+    const endIdx   = startIdx + K;
+    
+    // Afișează doar sub-array-ul relevant
+    filteredProducts.slice(startIdx, endIdx).forEach(col => {
+        container.appendChild(col.cloneNode(true));
+    });
 
-        // Câte pagini trebuie
-        const pageCount = Math.ceil(filteredProducts.length / K);
-        paginationContainer.innerHTML = '';
+    // Câte pagini trebuie
+    const pageCount = Math.ceil(filteredProducts.length / K);
+    paginationContainer.innerHTML = '';
 
-        // Generează câte un buton pentru fiecare pagină
-        for (let i = 1; i <= pageCount; i++) {
-            const btn = document.createElement('button');
-            // Clasă diferită dacă e pagina curentă
-            btn.className = `btn ${i === currentPage ? 'btn-primary active-page' : 'btn-outline-primary'} mx-1`;
-            btn.textContent = i;
-            btn.addEventListener('click', () => {
-                currentPage = i;
-                refreshPagination();
+    // Generează câte un buton pentru fiecare pagină
+    for (let i = 1; i <= pageCount; i++) {
+        const btn = document.createElement('button');
+        // Clasă diferită dacă e pagina curentă
+        btn.className = `btn ${i === currentPage ? 'btn-primary active-page' : 'btn-outline-primary'} mx-1`;
+        btn.textContent = i;
+        btn.addEventListener('click', () => {
+            currentPage = i;
+            refreshPagination();
+            
+            // Scroll la începutul secțiunii de produse
+            document.querySelector('.produse-list').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
-            paginationContainer.appendChild(btn);
-        }
-
-        // Inserează containerul de paginare după lista de produse, o singură dată
-        if (!container.parentNode.contains(paginationContainer)) {
-            container.parentNode.insertBefore(paginationContainer, container.nextSibling);
-        }
+        });
+        paginationContainer.appendChild(btn);
     }
+
+    // Inserează containerul de paginare după lista de produse, o singură dată
+    if (!container.parentNode.contains(paginationContainer)) {
+        container.parentNode.insertBefore(paginationContainer, container.nextSibling);
+    }
+    
+    // Scroll la început după încărcarea paginii
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
 
     // Atașează evenimente change/click pentru filtre și butoane
     function setupEventListeners() {
@@ -403,6 +439,50 @@ document.addEventListener('DOMContentLoaded', () => {
             if (alerta) alerta.remove();
         }, 3000);
     }
+
+     // Initialize modal
+      const modalProdus = new bootstrap.Modal(document.getElementById('modalProdus'));
+      
+      // Event delegation for product clicks
+      document.querySelector('.produse-list').addEventListener('click', (e) => {
+          const article = e.target.closest('.produs');
+          if (!article) return;
+          
+          // Prevent modal from opening when clicking on the details button
+          if (e.target.closest('a[href^="/produs/"]')) return;
+          
+          // Populate modal with product data
+          document.getElementById('modalTitlu').textContent = article.querySelector('.card-title').textContent;
+          
+          // Clone the card body content
+          const cardBody = article.querySelector('.card-body').cloneNode(true);
+          
+          // Remove the details button from modal
+          const detailsBtn = cardBody.querySelector('a[href^="/produs/"]');
+          if (detailsBtn) detailsBtn.remove();
+          
+          // Adjust image styling for modal
+          const img = cardBody.querySelector('img');
+          if (img) {
+              img.style.height = 'auto';
+              img.classList.add('img-fluid', 'mb-3');
+          }
+          
+          // Set modal body content
+          const modalBody = document.getElementById('modalBody');
+          modalBody.innerHTML = '';
+          modalBody.appendChild(cardBody);
+          
+          // Show modal
+          modalProdus.show();
+      });
+
+       // Close modal when clicking outside
+      document.getElementById('modalProdus').addEventListener('click', (e) => {
+          if (e.target === document.getElementById('modalProdus')) {
+              modalProdus.hide();
+          }
+      });
 
     // Pornim tot
     init();

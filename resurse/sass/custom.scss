@@ -459,3 +459,120 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     font-weight: bold;
 }
+
+.modal-content {
+    border: 2px solid var(--color-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    
+    .modal-header {
+        background-color: var(--color-primary);
+        color: var(--color-text-light);
+        border-bottom: 2px solid var(--color-border);
+        
+        .btn-close {
+            filter: invert(1);
+        }
+    }
+    
+    .modal-body {
+        background-color: var(--bs-body-bg);
+        color: var(--bs-body-color);
+        padding: 1.5rem;
+        
+        .card-body {
+            padding: 0;
+            
+            .row {
+                flex-direction: column;
+                
+                .col-md-5, .col-md-7 {
+                    width: 100%;
+                    max-width: 100%;
+                }
+                
+                img {
+                    width: 100%;
+                    max-height: 300px;
+                    object-fit: contain;
+                }
+            }
+            
+            table {
+                width: 100%;
+                margin: 1rem 0;
+                
+                tr {
+                    border-bottom: 1px solid var(--color-border);
+                    
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                    
+                    td {
+                        padding: 0.5rem 0;
+                    }
+                }
+            }
+        }
+    }
+    
+    .modal-footer {
+        background-color: var(--color-secondary);
+        border-top: 2px solid var(--color-border);
+    }
+}
+
+// Stiluri specifice pentru tema dark
+:root[data-theme="dark"] {
+    .modal-content {
+        background-color: var(--override-bg);
+        color: var(--override-color);
+        
+        .modal-header {
+            background-color: var(--color-primary-darken-10);
+        }
+        
+        .modal-footer {
+            background-color: var(--color-secondary);
+        }
+    }
+}
+
+.produs {
+  .bg-warning {
+    background-color: var(--color-primary) !important;
+    color: var(--color-text-light) !important;
+    font-size: 0.9rem;
+    opacity: 0.95;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border-radius: 0.25rem 0.25rem 0 0;
+    
+    i {
+      font-size: 1.1em;
+    }
+  }
+}
+
+// Stiluri pentru tema dark
+:root[data-theme="dark"] {
+  .produs .bg-warning {
+    background-color: var(--color-primary-darken-10) !important;
+  }
+}
+
+.card-set {
+  transition: transform 0.3s, box-shadow 0.3s;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.border-primary {
+  border: 2px solid var(--color-primary);
+}
