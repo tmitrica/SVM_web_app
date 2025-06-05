@@ -1,76 +1,102 @@
 <!DOCTYPE html>
 <html>
-<%- include("../fragmente/head") %>
+  <!-- Include fișierul "head" care conține meta, link-uri CSS și eventual JavaScript -->
+  <%- include("../fragmente/head") %>
 <body>
+    <!-- Include fișierul "header" cu navigația și logo-ul site-ului -->
     <%- include("../fragmente/header") %>
     
     <main class="produs-container">
+        <!-- Afișează numele produsului primit din contextul EJS -->
         <h1><%= produs.nume %></h1>
         <div class="produs-detalii">
+            <!-- Imaginea principală a produsului: sursa este calculată din atributul produs.imagine -->
             <img src="/resurse/imagini/<%= produs.imagine %>" alt="<%= produs.nume %>">
             <div class="informatii">
+                <!-- Afișează prețul produsului cu format puternic (bold) -->
                 <p class="pret">Preț: <strong><%= produs.pret %> EUR</strong></p>
+                <!-- Afișează kilometrajul produsului în kilometri -->
                 <p>Kilometraj: <%= produs.kilometraj %> km</p>
+                <!-- Categoria principală a produsului (ex: "SUV", "Sedan" etc.) -->
                 <p>Categorie: <%= produs.categorie_mare %></p>
+                <!-- Categoria secundară, de regulă tipul motorului sau detaliu tehnic -->
                 <p>Motor: <%= produs.categorie_secundara %></p>
+                <!-- Culoarea produsului afișată convențional -->
                 <p>Culoare: <%= produs.culoare %></p>
+                <!-- Listează dotările produsului (ex: "Aer condiționat, Navigație" etc.) -->
                 <p>Dotări: <%= produs.dotari %></p>
+                <!-- Afișează dacă există garanție extensibilă: se folosește operatorul ternar EJS -->
                 <p>Garantie extensibilă: <%= produs.garantie_extensibila ? 'Da' : 'Nu' %></p>
+                <!-- Formatează data adăugării produsului folosind obiectul JavaScript Date -->
                 <p>Adăugat pe: <%= new Date(produs.data_adaugare).toLocaleDateString() %></p>
             </div>
         </div>
      
     </main>
 
-    <!-- În views/pagini/produs.ejs -->
-<% if (seturi && seturi.length) { %>
-  <section class="mt-5 pt-4 border-top">
-    <h2 class="h3 mb-4">Acest produs face parte din următoarele seturi:</h2>
-    
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-      <% seturi.forEach(set => { %>
-        <div class="col">
-          <div class="card h-100 shadow-sm border-primary">
-            <div class="card-header bg-primary text-white py-2">
-              <h3 class="h5 mb-0"><%= set.nume_set %></h3>
-            </div>
-            <div class="card-body">
-              <p class="card-text"><%= set.descriere_set %></p>
-              
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="badge bg-info">
-                    <%= set.produse.length %> produse
-                </span>
-                <div>
-                    <span class="text-muted text-decoration-line-through me-2">
-                    <%= set.pret.faraDiscountFormatat %> €
-                    </span>
-                    <span class="fs-5 fw-bold text-danger">
-                    <%= set.pret.cuDiscountFormatat %> €
-                    </span>
+    <!-- Secțiune condițională ce apare doar dacă există cel puțin un set care conține acest produs -->
+    <% if (seturi && seturi.length) { %>
+      <section class="mt-5 pt-4 border-top">
+        <!-- Titlul secțiunii -->
+        <h2 class="h3 mb-4">Acest produs face parte din următoarele seturi:</h2>
+        
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <!-- Iterează prin fiecare set din array-ul "seturi" -->
+          <% seturi.forEach(set => { %>
+            <div class="col">
+              <!-- Card pentru fiecare set cu contur și umbră ușoară -->
+              <div class="card h-100 shadow-sm border-primary">
+                <!-- Header-ul cardului cu fundal primar și text alb -->
+                <div class="card-header bg-primary text-white py-2">
+                  <!-- Numele setului afișat ca titlu H3 cu stil H5 -->
+                  <h3 class="h5 mb-0"><%= set.nume_set %></h3>
                 </div>
+                <div class="card-body">
+                  <!-- Descrierea setului -->
+                  <p class="card-text"><%= set.descriere_set %></p>
+                  
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <!-- Afișează câte produse conține setul (lungimea array-ului "produse") -->
+                    <span class="badge bg-info">
+                      <%= set.produse.length %> produse
+                    </span>
+                    <div>
+                      <!-- Preț inițial (fără discount) afișat șters -->
+                      <span class="text-muted text-decoration-line-through me-2">
+                        <%= set.pret.faraDiscountFormatat %> €
+                      </span>
+                      <!-- Prețul cu discount afișat îndrăzneț și colorat în roșu -->
+                      <span class="fs-5 fw-bold text-danger">
+                        <%= set.pret.cuDiscountFormatat %> €
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex flex-wrap gap-2">
+                    <!-- Iterează fiecare produs din set pentru a-l lista -->
+                    <% set.produse.forEach(prod => { %>
+                      <!-- Link către pagina produsului; dacă este produsul curent, se aplică clasa "bg-warning rounded p-1" -->
+                      <a href="/produs/<%= prod.id %>" 
+                         class="text-decoration-none d-flex align-items-center <%= prod.id === produs.id ? 'bg-warning rounded p-1' : '' %>">
+                        <!-- Imagine mică a produsului (40x40) cu colțuri rotunjite și fit corespunzător -->
+                        <img src="../../resurse/imagini/<%= prod.imagine %>" 
+                             width="40" height="40"
+                             class="rounded me-2 object-fit-cover"
+                             alt="<%= prod.nume %>">
+                        <!-- Numele produsului afișat lângă imagine -->
+                        <span><%= prod.nume %></span>
+                      </a>
+                    <% }) %>
+                  </div>
                 </div>
-              
-              <div class="d-flex flex-wrap gap-2">
-                <% set.produse.forEach(prod => { %>
-                  <a href="/produs/<%= prod.id %>" 
-                     class="text-decoration-none d-flex align-items-center <%= prod.id === produs.id ? 'bg-warning rounded p-1' : '' %>">
-                    <img src="../../resurse/imagini/<%= prod.imagine %>" 
-                         width="40" height="40"
-                         class="rounded me-2 object-fit-cover"
-                         alt="<%= prod.nume %>">
-                    <span><%= prod.nume %></span>
-                  </a>
-                <% }) %>
               </div>
             </div>
-          </div>
+          <% }) %>
         </div>
-      <% }) %>
-    </div>
-  </section>
-<% } %>
+      </section>
+    <% } %>
 
+    <!-- Include fișierul "footer" pentru subsolul paginii -->
     <%- include("../fragmente/footer") %>
 </body>
 </html>
